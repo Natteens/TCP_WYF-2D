@@ -58,7 +58,9 @@ public class Player : MonoBehaviour
     void OnMove()
     {
         Vector2 normalizedDirection = _direction.normalized;
-        rig.MovePosition(rig.position + _direction * speed * Time.fixedDeltaTime);   
+        rig.MovePosition(rig.position + _direction * speed * Time.fixedDeltaTime);
+        _direction.Normalize();
+
     }
 
     void OnRun()

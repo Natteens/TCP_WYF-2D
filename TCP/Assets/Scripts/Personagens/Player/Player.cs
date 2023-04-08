@@ -57,8 +57,8 @@ public class Player : MonoBehaviour
 
     void OnMove()
     {
-       
-            rig.MovePosition(rig.position + _direction * speed * Time.fixedDeltaTime);   
+        Vector2 normalizedDirection = _direction.normalized;
+        rig.MovePosition(rig.position + _direction * speed * Time.fixedDeltaTime);   
     }
 
     void OnRun()
@@ -74,11 +74,7 @@ public class Player : MonoBehaviour
             _isRunning = false;
         }
     }
-
   
-
-
-
 
     #endregion
 }

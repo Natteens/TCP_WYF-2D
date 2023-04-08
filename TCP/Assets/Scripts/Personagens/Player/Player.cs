@@ -65,18 +65,19 @@ public class Player : MonoBehaviour
 
     void OnRun()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _direction.sqrMagnitude > 0)
         {
             speed = runSpeed;
             _isRunning = true;
         }
-        if(Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) || _direction.sqrMagnitude == 0)
         {
             speed = initialSpeed;
             _isRunning = false;
         }
     }
-  
+
+
 
     #endregion
 }

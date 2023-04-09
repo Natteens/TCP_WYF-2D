@@ -18,17 +18,20 @@ public class PlayerAnim : MonoBehaviour
     void Update()
     {
         OnMove();
-        OnRun();       
+        OnRun();
+        OnRoll();
+
     }
+
     #region Movement
 
     void OnMove()
     {
         if (player.direction.sqrMagnitude > 0) // sqr magnitude retorna a media do x e y 
-        {                    
-           
-            anim.SetInteger("transition", 2);
-         
+        {      
+            
+            anim.SetInteger("transition", 2); 
+                     
         }
         else
         {
@@ -46,7 +49,6 @@ public class PlayerAnim : MonoBehaviour
     }
 
 
-
     void OnRun()
     {
         if(player.isRunning)
@@ -56,6 +58,29 @@ public class PlayerAnim : MonoBehaviour
     }
 
     #endregion
+
+    #region Rolling
+    void OnRoll()
+    {
+        if (player.isRolling && !anim.GetCurrentAnimatorStateInfo(0).IsName("Roll"))
+        {
+            anim.SetTrigger("isRoll");
+            player.isRolling = false;
+            player.canRoll = false;
+            
+        }
+    }
+
+
+    void OnRollComplete()
+    {
+        player.canRoll = true;      
+        Debug.Log("COMPLETO A ANIM");
+    }
+
+    #endregion
+
+
 
 
 

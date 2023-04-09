@@ -6,15 +6,20 @@ public class Player : MonoBehaviour
 
 {
 
-    [SerializeField] private float speed;
-    [SerializeField] private float runSpeed;
- 
+    [SerializeField] public float speed;
+    [SerializeField] private float runSpeed; 
+    [SerializeField] public float rollSpeed;
+    [SerializeField] public float initialSpeed;
+    [SerializeField] public bool canRoll = true;
+
 
     private Rigidbody2D rig;
 
-    private float initialSpeed;
+    
     private bool _isRunning;
- 
+    private bool _isRolling;
+    
+
     private Vector2 _direction;
 
     public Vector2 direction
@@ -27,12 +32,19 @@ public class Player : MonoBehaviour
         get { return _isRunning; }
         set { _isRunning = value; }
     }
+    public bool isRolling
+    {
+        get { return _isRolling; }
+        set { _isRolling = value; }
+    }
 
 
     private void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
+       
+        
 
     }
 
@@ -40,12 +52,14 @@ public class Player : MonoBehaviour
     {
         OnInput();
         OnRun();
-       
+        OnRoll();
+
     }
 
     private void FixedUpdate()
     {
         OnMove();
+        
     }
 
     #region Movement
@@ -62,7 +76,6 @@ public class Player : MonoBehaviour
         rig.MovePosition(rig.position + _direction * speed * Time.fixedDeltaTime);
     }
 
-
     void OnRun()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && _direction.sqrMagnitude > 0)
@@ -77,6 +90,22 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    void OnRoll()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && canRoll && !isRolling && _direction.magnitude > 0f)
+        {
+            _isRolling = true;
+            canRoll = false;
+            speed = rollSpeed;
+            
+        }
+    }
+
+    void EndRoll()
+    {
+        speed = initialSpeed;
+    }
 
 
     #endregion

@@ -11,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Wall
+  - Bullets
   - 
   - 
   - 
@@ -55,4 +55,10 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2558752169
+    locked: 0
+  - name: Player ARM
+    uniqueID: 1706203135
+    locked: 0
+  - name: Smoke
+    uniqueID: 3578201947
     locked: 0

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Spr_base_0
+  m_Name: Spr_base-Sheet
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -7323977427685615484, guid: 8754e4bc9d0ec4349b35ebbc56a5bb95, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cd62f2c9779d52b428bcdc3e91b32840, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

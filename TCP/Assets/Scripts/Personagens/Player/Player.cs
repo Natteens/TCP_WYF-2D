@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] public float rollSpeed;
     [SerializeField] public float initialSpeed;
     [SerializeField] public bool canRoll = true;
-
+    
 
     private Rigidbody2D rig;
 
@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
         set { _isRolling = value; }
     }
 
+   
 
     private void Start()
     {

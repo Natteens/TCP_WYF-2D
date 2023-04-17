@@ -8,6 +8,8 @@ TagManager:
   - Weapon
   - bullet
   - Aim
+  - Object
+  - UI_MUNICAO
   layers:
   - Default
   - TransparentFX
@@ -19,8 +21,8 @@ TagManager:
   - Wall
   - Bullets
   - Weapon
-  - 
-  - 
+  - Aim
+  - Munition
   - 
   - 
   - 
@@ -69,6 +71,12 @@ TagManager:
   - name: Enviroments2
     uniqueID: 125758165
     locked: 0
+  - name: Efeitos
+    uniqueID: 2026061883
+    locked: 0
   - name: Smoke
     uniqueID: 3578201947
+    locked: 0
+  - name: 'MOUSE AIM '
+    uniqueID: 3511895867
     locked: 0

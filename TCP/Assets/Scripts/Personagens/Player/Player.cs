@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] public float rollSpeed;
     [SerializeField] public float initialSpeed;
     [SerializeField] public bool canRoll = true;
+   
     
 
     private Rigidbody2D rig;
@@ -44,9 +45,6 @@ public class Player : MonoBehaviour
     {
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
-       
-        
-
     }
 
     private void Update()

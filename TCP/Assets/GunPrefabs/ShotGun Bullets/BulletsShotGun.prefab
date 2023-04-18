@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 16
-  destroyedDelay: 0.09
+  destroyedDelay: 0
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 2368

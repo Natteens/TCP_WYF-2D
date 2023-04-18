@@ -10,6 +10,7 @@ TagManager:
   - Aim
   - Object
   - UI_MUNICAO
+  - ItensColetaveis
   layers:
   - Default
   - TransparentFX

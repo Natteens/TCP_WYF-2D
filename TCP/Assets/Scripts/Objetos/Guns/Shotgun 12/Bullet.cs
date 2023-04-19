@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
             return;
         }
 
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") || collision.CompareTag("Weapon"))
         {
             // Não faz nada se colidir com o player
             return;

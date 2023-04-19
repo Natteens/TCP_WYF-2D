@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerAnim : MonoBehaviour
 { 
     private Player player;
-    private Gun gun;
+  
     private Animator _anim;
     public bool equipado;
-    
+    private Gun gun;
 
 
     public Animator anim
@@ -21,7 +21,7 @@ public class PlayerAnim : MonoBehaviour
     void Start()
     {
         player = GetComponent<Player>();
-        gun = GetComponent<Gun>();
+        gun = FindAnyObjectByType<Gun>();                  
         anim = GetComponent<Animator>();
         equipado = false;
     }
@@ -43,12 +43,13 @@ public class PlayerAnim : MonoBehaviour
         {      
            if(equipado)
            {
-            anim.SetInteger("transition", 0);
-              anim.SetInteger("OnGun", 2);
+             anim.SetInteger("transition", 0);
+             anim.SetInteger("OnGun", 2);
           }
           else
           {
-             anim.SetInteger("transition", 2);
+                anim.SetInteger("OnGun", 0);
+                anim.SetInteger("transition", 2);
            }
             
                      
@@ -62,7 +63,8 @@ public class PlayerAnim : MonoBehaviour
             }
             else
             {
-              anim.SetInteger("transition", 1);
+                anim.SetInteger("OnGun", 0);
+                anim.SetInteger("transition", 1);
             }
         }
 
@@ -84,11 +86,13 @@ public class PlayerAnim : MonoBehaviour
 
            if (equipado)
            {
-               anim.SetInteger("OnGun", 3);
+                anim.SetInteger("transition", 0);
+                anim.SetInteger("OnGun", 3);
            }
            else
            {
-             anim.SetInteger("transition", 3);
+                anim.SetInteger("OnGun", 0);
+                anim.SetInteger("transition", 3);
            }
         }
     }

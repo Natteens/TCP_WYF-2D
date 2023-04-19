@@ -136,6 +136,7 @@ MonoBehaviour:
   rifleSprite: {fileID: 6222273555182206836, guid: 15ce5d112be025040a67dbd5d5b7fb70, type: 3}
   shotgunSprite: {fileID: -4542323460344573999, guid: 15ce5d112be025040a67dbd5d5b7fb70, type: 3}
   municaoRestante: 0
+  gunPrefab: {fileID: 0}
 --- !u!114 &3369339062664123016
 MonoBehaviour:
   m_ObjectHideFlags: 0

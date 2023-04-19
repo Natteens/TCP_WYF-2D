@@ -14,10 +14,12 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
     [SerializeField] private int municaoRestante;
     private Dictionary<TipoArma, Sprite> sprites;
 
+    [SerializeField] private Gun gunPrefab;
+
     private void Awake()
     {
         playerAnim = FindObjectOfType<PlayerAnim>();
-        gun = FindObjectOfType<Gun>();
+        gun = Instantiate(gunPrefab);
         sprites = new Dictionary<TipoArma, Sprite>()
         {
             { TipoArma.Pistola, pistolaSprite },
@@ -25,6 +27,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
             { TipoArma.Shotgun, shotgunSprite }
         };
     }
+
 
     private void Start()
     {

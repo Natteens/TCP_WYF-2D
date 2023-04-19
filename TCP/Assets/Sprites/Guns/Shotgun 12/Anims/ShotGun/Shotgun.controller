@@ -203,7 +203,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shotgun
+  m_Name: shotgun
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: transition
@@ -211,19 +211,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: OnFire
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: OnReload
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -356,16 +356,16 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1242994182738423851}
-    m_Position: {x: -110, y: 460, z: 0}
+    m_Position: {x: -140, y: 410, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1883120778600353524}
     m_Position: {x: 110, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -277137448843812838}
-    m_Position: {x: 30, y: 230, z: 0}
+    m_Position: {x: 50, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3788189645773672485}
-    m_Position: {x: 280, y: 100, z: 0}
+    m_Position: {x: 250, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3704086370848674062}
     m_Position: {x: 340, y: 260, z: 0}
@@ -377,8 +377,8 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 490, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 40, y: 10, z: 0}
+  m_EntryPosition: {x: -20, y: 70, z: 0}
+  m_ExitPosition: {x: -120, y: -320, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -277137448843812838}
 --- !u!1101 &5962018695893657606

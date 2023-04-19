@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,10 +11,6 @@ public class Pegouitem : MonoBehaviour
     public LayerMask layerJogador;
 
     [SerializeField] float distanciaMaxima = 2f;
-
-    
-    Rigidbody2D rb2d;
-    Collider2D col;
    
 
     private void Update()
@@ -36,20 +32,21 @@ public class Pegouitem : MonoBehaviour
                         switch (tipoArma)
                         {
                             case TipoArma.Rifle:
+                               
                                 gun.rifleDesbloqueado = true;
+                                gun.numArmasDesbloqueadas++;
                                 break;
                             case TipoArma.Shotgun:
                                 gun.shotgunDesbloqueado = true;
+                                gun.numArmasDesbloqueadas++;
                                 break;
                             case TipoArma.Pistola:
                                 gun.pistolaDesbloqueado = true;
+                                gun.numArmasDesbloqueadas++;
                                 break;
                         }
-                        gun.estaNaMao = true;
-                        playerAnim.equipado = true;                      
-                        //anim.SetInteger("transition", 2);
-
-                        //DESTRUINDO OBJ Q PEGUEI 
+                   
+                         gun.estaNaMao = true;                      
                         Destroy(gameObject);
                     }
 
@@ -71,10 +68,10 @@ public class Pegouitem : MonoBehaviour
        anim.SetInteger("transition", 1);
        playerAnim.anim.SetInteger("OnGun", 0);
 
-       // Determine a dire??o para onde jogar a arma
+       // Determine a dire��o para onde jogar a arma
        Vector2 dropDirection = (mousePosi - (Vector2)transform.position).normalized;
 
-       // Adicione a for?a para jogar a arma nessa dire??o
+       // Adicione a for�a para jogar a arma nessa dire��o
        rb2d.AddForce(dropDirection * DropSpeed, ForceMode2D.Impulse);
 
        // Reduza gradualmente a velocidade da arma

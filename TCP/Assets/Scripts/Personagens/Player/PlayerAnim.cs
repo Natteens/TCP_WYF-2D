@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerAnim : MonoBehaviour
 { 
     private Player player;
-  
+    GameObject myObject;
+
     private Animator _anim;
     public bool equipado;
     private Gun gun;
@@ -15,6 +16,11 @@ public class PlayerAnim : MonoBehaviour
     {
         get { return _anim; }
         set { _anim = value; }
+    }
+
+    private void Awake()
+    {
+        myObject = GameObject.Find("arma");
     }
 
     // Start is called before the first frame update
@@ -106,21 +112,20 @@ public class PlayerAnim : MonoBehaviour
     {
         if (player.isRolling && !anim.GetCurrentAnimatorStateInfo(0).IsName("Roll"))
         {
-            if(equipado)
-            {
-                anim.SetTrigger("isRollGun");
-                player.isRolling = false;
-                player.canRoll = false;
-            }
-            else
+            if(equipado)        
             {
                 anim.SetTrigger("isRoll");
                 player.isRolling = false;
                 player.canRoll = false;
+                myObject.SetActive(false);
             }
-            
-
-           
+            else if (!equipado && gun.numArmasDesbloqueadas > 0)
+            {
+                anim.SetTrigger("isRoll");
+                player.isRolling = false;
+                player.canRoll = false;
+                myObject.SetActive(false);
+            }
 
         }
     }
@@ -128,8 +133,11 @@ public class PlayerAnim : MonoBehaviour
     void OnRollComplete()
     {
         player.canRoll = true;
-        // define o valor de alpha como o valor padrão
-
+        if(gun.numArmasDesbloqueadas > 0 &&  gun.tipoArma != TipoArma.Nenhum)
+        {
+            myObject.SetActive(true);
+        }
+        
     }
 
 

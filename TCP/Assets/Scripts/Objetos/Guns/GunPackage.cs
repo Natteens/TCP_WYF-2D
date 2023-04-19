@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class GunPackage : MonoBehaviour                         /// arrumar o GUN FIND OBJT  POIS ELE TA PEGANDO SO O GUN DO RIFLE NESSA CACETA 
 {
-    [SerializeField] private int municaoNoPacote;
+    [SerializeField] private Gun gun;
     [SerializeField] private TipoArma tipoArma;
-    [SerializeField] private PlayerAnim playerAnim;
+    [SerializeField] private int municaoNoPacote;   
     [SerializeField] private Sprite pistolaSprite;
     [SerializeField] private Sprite rifleSprite;
     [SerializeField] private Sprite shotgunSprite;
-    private Gun gun;
     [SerializeField] private int municaoRestante;
     private Dictionary<TipoArma, Sprite> sprites;
 
-    [SerializeField] private Gun gunPrefab;
-
     private void Awake()
     {
-        playerAnim = FindObjectOfType<PlayerAnim>();
-        gun = Instantiate(gunPrefab);
+        gun = FindAnyObjectByType<Gun>();
+
         sprites = new Dictionary<TipoArma, Sprite>()
         {
             { TipoArma.Pistola, pistolaSprite },

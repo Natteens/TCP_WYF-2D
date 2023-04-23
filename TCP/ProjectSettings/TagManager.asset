@@ -11,6 +11,7 @@ TagManager:
   - Object
   - UI_MUNICAO
   - ItensColetaveis
+  - Smoke
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - Weapon
   - Aim
   - Munition
-  - 
-  - 
+  - Smoke
+  - ItensColetaveis
   - 
   - 
   - 
@@ -48,17 +49,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Chao_1
+  - name: Background
+    uniqueID: 944889457
+    locked: 0
+  - name: floor
     uniqueID: 4256901077
     locked: 0
-  - name: Chao_2
+  - name: floor 2
     uniqueID: 1892581627
-    locked: 0
-  - name: Objects
-    uniqueID: 1905159863
     locked: 0
   - name: Enviroments
     uniqueID: 1774051573
+    locked: 0
+  - name: Walls
+    uniqueID: 3376545607
+    locked: 0
+  - name: Objects
+    uniqueID: 1905159863
     locked: 0
   - name: Player
     uniqueID: 2558752169
@@ -80,4 +87,7 @@ TagManager:
     locked: 0
   - name: 'MOUSE AIM '
     uniqueID: 3511895867
+    locked: 0
+  - name: Colisores
+    uniqueID: 1360522443
     locked: 0

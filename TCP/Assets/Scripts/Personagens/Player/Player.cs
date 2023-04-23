@@ -7,21 +7,23 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] public float speed;
-    [SerializeField] private float runSpeed; 
+    [SerializeField] public float runSpeed; 
     [SerializeField] public float rollSpeed;
     [SerializeField] public float initialSpeed;
     [SerializeField] public bool canRoll = true;
-   
+    [SerializeField] private PlayerAnim playerAnim;
+    [SerializeField] private Gun gun;
+    [SerializeField] private Controle controle;
+
+   public int energiaGasta = 1;
     
 
     private Rigidbody2D rig;
-
     
     private bool _isRunning;
     private bool _isRolling;
-    
-
     private Vector2 _direction;
+    
 
     public Vector2 direction
     {
@@ -39,73 +41,86 @@ public class Player : MonoBehaviour
         set { _isRolling = value; }
     }
 
-   
-
     private void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
     }
 
-    private void Update()
+    void Update()
     {
-        OnInput();
-        OnRun();
-        OnRoll();
-
+        //   OnInput();     
+        //   OnRoll();
+       
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
+        OnInput();       
         OnMove();
-        
+        OnRun();
+        if(controle.EstaminaAtual >= 15)
+        {
+            OnRoll();
+        }    
     }
 
     #region Movement
 
     void OnInput()
     {
-        _direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
 
     void OnMove()
     {
-        _direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        _direction.Normalize();
-        rig.MovePosition(rig.position + _direction * speed * Time.fixedDeltaTime);
+      //  direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        direction.Normalize();
+        rig.MovePosition(rig.position + direction * speed * Time.fixedDeltaTime);
     }
 
-    void OnRun()
+     void OnRun()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && _direction.sqrMagnitude > 0)
+       
+        if (Input.GetKeyDown(KeyCode.LeftShift) && direction.magnitude > 0f && controle.EstaminaAtual > 0)
         {
+           // direction.Normalize();
             speed = runSpeed;
-            _isRunning = true;
+            isRunning = true;
+           
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || _direction.sqrMagnitude == 0)
+        if (Input.GetKeyUp(KeyCode.LeftShift) || direction.sqrMagnitude == 0 )
         {
+           // direction.Normalize();
             speed = initialSpeed;
-            _isRunning = false;
+            isRunning = false;
         }
     }
-
 
     void OnRoll()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && canRoll && !isRolling && _direction.magnitude > 0f)
+        if (Input.GetKeyDown(KeyCode.Space) && canRoll && !isRolling && direction.magnitude > 0)
         {
-            _isRolling = true;
+            direction.Normalize();
+            isRolling = true;
             canRoll = false;
             speed = rollSpeed;
-            
+            controle.EstaminaAtual -= 15;
         }
     }
 
     void EndRoll()
     {
+        isRolling = false;
+        canRoll = true;
         speed = initialSpeed;
+       
     }
 
 
     #endregion
+
+
+
+
 }

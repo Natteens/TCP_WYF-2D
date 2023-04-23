@@ -1,26 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public enum TipoArma
 {
+    Nenhum,
     Pistola,
-    Rifle,
     Shotgun,
-    Nenhum
+    Rifle
 }
-
 public class Gun : MonoBehaviour
 {
     [SerializeField] private PlayerAnim playerAnim;
-    [SerializeField] private Player player;
     [SerializeField] private TipoArma _tipoArma;
     [SerializeField] private Animator anim;
-
+    
     Vector2 mousePosi;
     Vector2 dirArma;
 
-    [SerializeField] private SpriteRenderer srGun;
+    [SerializeField] private SpriteRenderer _srGun;
     [SerializeField] GameObject tiro;
 
     [SerializeField] Transform pontoDeFogo;
@@ -29,64 +26,69 @@ public class Gun : MonoBehaviour
     [SerializeField] private Vector3 posicaoPontoDeFogoShotgun = new Vector3(0.7f, 0f, 0f);
 
     float angle;
-    private bool podeAtirar = true;
+    [SerializeField] private bool _podeAtirar = false;
     public LayerMask layerJogador;
     public bool estaNaMao = false;
 
 
     #region ARMAS E MUNIÇÃO
 
-  
-    [SerializeField] public int numArmasDesbloqueadas = 0; // quantidade total de armas desbloqueadas
-    [SerializeField] private int armaAtual = 0; // índice da arma atual
-    [SerializeField] private bool _nadaDesbloqueado = true;
-    [SerializeField] private bool _rifleDesbloqueado = false; // indica se o rifle está desbloqueado
+    [SerializeField] private int armaAtual = 0; // valor da arma atual
+    [SerializeField] public bool armaDesbloqueada = false;
+    [SerializeField] public int numArmasDesbloqueadas;
+    [SerializeField] private bool _nadaDesbloqueado = true;   
+    [SerializeField] private bool _rifleDesbloqueado = false;   // indica se o rifle está desbloqueado
     [SerializeField] private bool _shotgunDesbloqueado = false; // indica se a shotgun está desbloqueada
     [SerializeField] private bool _pistolaDesbloqueado = false; // indica se a pistola está desbloqueada
-    [SerializeField] private RuntimeAnimatorController  rifle, shotgun, pistola;
- 
+
+    [SerializeField] private RuntimeAnimatorController rifle, shotgun, pistola;
+
+
 
     #region Balas
 
-    [SerializeField] private int numBullets;                  // número de balas a serem instanciadas
-    [SerializeField] private float angleBetweenBullets;       // ângulo entre cada bala em graus
-    [SerializeField] private float bulletSpread;              // desvio aleatório de cada bala em graus
-    [SerializeField] private int _maxBalasGuardadas;          // numero maximo de balas guardadas da arma 
-    [SerializeField] private int _balasGuardadas;             // numero de balas guardadas atualmente na arma   
-    [SerializeField] private int _balasNoPente;               // numero de balas atualmente no pente da arma 
-    [SerializeField] private int _tamanhoPente;               // tamanho maximo do pente da arma 
     [SerializeField] private int _balasRecarregadas = 0;      // numero de balas recarregadas 
     [SerializeField] private bool _recarregando = false;      // verificação pra saber se esta dando reload
-    [SerializeField] private bool _recarregado = true;        // verificção pra saber se o reload ja acabou ou se a arma esta recarregada
+
+    public float tempoDeTroca = 2f;
+    public int tempoMaximo = 3;
+    public float tempoDecorrido = 0f;
+
+    #region VAR ARMAS
+    // Pistola
+    public int pistolaMaxBalasGuardadas;
+    public int pistolaBalasGuardadas;
+    public int pistolaBalasNoPente;
+    public int pistolaTamanhoPente;
+    public int pistolaNumBullets;
+    public float pistolaAngleBetweenBullets;
+    public float pistolaBulletSpread;
+
+    // Shotgun
+    public int shotgunMaxBalasGuardadas;
+    public int shotgunBalasGuardadas;
+    public int shotgunBalasNoPente;
+    public int shotgunTamanhoPente;
+    public int shotgunNumBullets;
+    public float shotgunAngleBetweenBullets;
+    public float shotgunBulletSpread;
+
+    // Rifle
+    public int rifleMaxBalasGuardadas;
+    public int rifleBalasGuardadas;
+    public int rifleBalasNoPente;
+    public int rifleTamanhoPente;
+    public int rifleNumBullets;
+    public float rifleAngleBetweenBullets;
+    public float rifleBulletSpread;
+
+    #endregion
+
     #endregion
 
 
     #region Get/Set
 
-    
-    public int maxBalasGuardadas
-    {
-        get { return _maxBalasGuardadas; }
-        set { _maxBalasGuardadas = value; }
-    }
-
-    public int balasGuardadas
-    {
-        get { return _balasGuardadas; }
-        set { _balasGuardadas = value; }
-    }
-
-    public int balasNoPente
-    {
-        get { return _balasNoPente; }
-        set { _balasNoPente = value; }
-    }
-
-    public int tamanhoPente
-    {
-        get { return _tamanhoPente; }
-        set { _tamanhoPente = value; }
-    }
 
     public int balasRecarregadas
     {
@@ -100,11 +102,11 @@ public class Gun : MonoBehaviour
         set { _recarregando = value; }
     }
 
-    public bool recarregado
+  /*  public bool recarregado
     {
         get { return _recarregado; }
         set { _recarregado = value; }
-    }
+    } */
 
     #endregion
 
@@ -112,6 +114,16 @@ public class Gun : MonoBehaviour
 
     #region GET/SET TIPO ARMA E ARMA DESBLOQUEADA
 
+    public bool podeAtirar
+    {
+        get { return _podeAtirar; }
+        set { _podeAtirar = value; }
+    }
+    public SpriteRenderer srGun
+    {
+        get { return _srGun; }
+        set { _srGun = value; }
+    }
 
     public TipoArma tipoArma
     {
@@ -145,72 +157,61 @@ public class Gun : MonoBehaviour
     void Awake()
     {
         srGun = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();       
-        player = GetComponent<Player>();    
+        anim = GetComponent<Animator>();
         GameObject playerObject = GameObject.Find("Player");
-        playerAnim = playerObject.GetComponent<PlayerAnim>();    
+        playerAnim = playerObject.GetComponent<PlayerAnim>();
+
     }
 
     void Start()
     {
        
+        pistolaMaxBalasGuardadas = 60;
+        pistolaBalasGuardadas = Random.Range(10, 35);
+        pistolaBalasNoPente = Random.Range(7, 12);
+        pistolaTamanhoPente = 12;
+        pistolaNumBullets = 1;
+        pistolaAngleBetweenBullets = 0f;
+        pistolaBulletSpread = 0f;
+
+
+
+        rifleMaxBalasGuardadas = 120;
+        rifleBalasGuardadas = Random.Range(10, 30);
+        rifleBalasNoPente = Random.Range(15, 30);
+        rifleTamanhoPente = 30;
+        rifleNumBullets = 1;
+        rifleAngleBetweenBullets = 0f;
+        rifleBulletSpread = 0f;
+
+
+
+        shotgunMaxBalasGuardadas = 24;
+        shotgunBalasGuardadas = Random.Range(10, 24);
+        shotgunBalasNoPente = Random.Range(7, 12);
+        shotgunTamanhoPente = 12;
+        shotgunNumBullets = 5;
+        shotgunAngleBetweenBullets = 10f;
+        shotgunBulletSpread = 5f;
+
     }
 
     void Update()
-    {
+    {       
         inputArma();
-
-        if (tipoArma != TipoArma.Nenhum)
-        {
-            Atirar();
-            ReloadArma();      
-        }
-
-        #region  TIPO ARMA RANDOMIZAÇÃO
-        if (tipoArma == TipoArma.Pistola)
-        {
-            maxBalasGuardadas = 60;
-            balasGuardadas = 16;        // Random.Range(5, 20);
-            balasNoPente = 10;          // Random.Range(5, 11);
-            tamanhoPente = 12;
-            numBullets = 1;
-            angleBetweenBullets = 0f;
-            bulletSpread = 0f;
-            pontoDeFogo.localPosition = posicaoPontoDeFogoPistola;
-        }
-        else if (tipoArma == TipoArma.Rifle)
-        {
-            maxBalasGuardadas = 120;
-            balasGuardadas = 20;           //Random.Range(5, 25);
-            balasNoPente = 15;           //Random.Range(5, 15);
-            tamanhoPente = 30;
-            numBullets = 1;
-            angleBetweenBullets = 0f;
-            bulletSpread = 0f;
-            pontoDeFogo.localPosition = posicaoPontoDeFogoRifle;
-        }
-        else if (tipoArma == TipoArma.Shotgun)
-        {
-            maxBalasGuardadas = 24;
-            balasGuardadas = 13;        //Random.Range(5, 11);
-            balasNoPente = 9;           //Random.Range(5, 10);
-            tamanhoPente = 12;
-            numBullets = 5;
-            angleBetweenBullets = 10f;
-            bulletSpread = 5f;
-            pontoDeFogo.localPosition = posicaoPontoDeFogoShotgun;
-        }
-        #endregion
+        Atirar();
+        ReloadArma();  
     }
 
     void FixedUpdate()
     {
         FollowMouse();
+
     }
 
     void FollowMouse()
     {
-        if (estaNaMao && armaAtual > 0)
+        if (armaAtual > 0)
         {
             dirArma = mousePosi - new Vector2(transform.parent.position.x, transform.parent.position.y);
             angle = Mathf.Atan2(dirArma.y, dirArma.x) * Mathf.Rad2Deg;
@@ -225,189 +226,262 @@ public class Gun : MonoBehaviour
             }
 
         }
+        
     }
 
-    #region pegar arma 
-    /*
-    void PegarArma()
-    {
-        if (!estaNaMao)                    
-        {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, distanciaMaxima, layerJogador);
-
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                if (colliders[i].tag == "Player")
-                {
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
-
-                        estaNaMao = true;
-                        playerAnim.equipado = true;
-                        rb2d.isKinematic = true;
-                        col.enabled = false;
-                        transform.parent = colliders[i].transform;
-                        transform.position = colliders[i].transform.position;
-                        transform.localRotation = Quaternion.identity;
-                        anim.SetInteger("transition", 2);
-
-                    }
-                }
-            }
-        }
-    }           
-    */
-    #endregion
     void Atirar()
     {
-        if (estaNaMao)
+        mousePosi = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (Input.GetMouseButton(0) && podeAtirar )
         {
-            mousePosi = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            if (Input.GetMouseButton(0) && podeAtirar && balasNoPente > 0)
+          // if(armaAtual > 0)
+            switch (tipoArma)
             {
-                podeAtirar = false;
-                anim.SetTrigger("OnFire");
+                case TipoArma.Pistola:
+                    if (tipoArma == TipoArma.Pistola && pistolaBalasNoPente > 0)
+                    {
+                        anim.SetTrigger("OnFire");
 
-                for (int i = 0; i < numBullets; i++)
-                {
-                    float angle = (i - (numBullets - 1) / 2f) * angleBetweenBullets; // ângulo entre cada bala
-                    angle += Random.Range(-bulletSpread, bulletSpread); // adicionar um pequeno desvio aleatório
+                        for (int i = 0; i < pistolaNumBullets; i++)
+                        {
+                            float angle = (i - (pistolaNumBullets - 1) / 2f) * pistolaAngleBetweenBullets; // ângulo entre cada bala
+                            angle += Random.Range(-pistolaBulletSpread, pistolaBulletSpread); // pequeno desvio aleatório
 
-                    GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
-                    bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
-                }
-                balasNoPente--; // gasta uma bala para cada bala disparada
+                            GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
+                            bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
+                        }
+
+                        pistolaBalasNoPente--;
+                        podeAtirar = false;
+                    }
+                    break;
+
+                case TipoArma.Rifle:
+                    if (tipoArma == TipoArma.Rifle && rifleBalasNoPente > 0)
+                    {
+                        anim.SetTrigger("OnFire");
+
+                        for (int i = 0; i < rifleNumBullets; i++)
+                        {
+                            float angle = (i - (rifleNumBullets - 1) / 2f) * rifleAngleBetweenBullets; // ângulo entre cada bala
+                            angle += Random.Range(-rifleBulletSpread, rifleBulletSpread); // pequeno desvio aleatório
+
+                            GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
+                            bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
+                        }
+
+                        rifleBalasNoPente--;
+                        podeAtirar = false;
+                    }
+                    break;
+
+                case TipoArma.Shotgun:
+                    if (tipoArma == TipoArma.Shotgun && shotgunBalasNoPente > 0)
+                    {
+                        anim.SetTrigger("OnFire");
+
+                        for (int i = 0; i < shotgunNumBullets; i++)
+                        {
+                            float angle = (i - (shotgunNumBullets - 1) / 2f) * shotgunAngleBetweenBullets; // ângulo entre cada bala
+                            angle += Random.Range(-rifleBulletSpread, shotgunBulletSpread); //  desvio aleatório
+
+                            GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
+                            bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
+                        }
+
+                        shotgunBalasNoPente--;
+                        podeAtirar = false;
+
+                    }
+                    break;
             }
+
+          //  podeAtirar = false;
         }
     }
 
     void ReloadArma()
-    {
-        if (estaNaMao)
-        {
-            if (Input.GetKeyDown(KeyCode.R) || (Input.GetMouseButton(0) && podeAtirar && balasNoPente <= 0))
-            {
-                RecargaArma();
-            }
-        }
-        
+    {   
+      switch (tipoArma)
+      {
+          case TipoArma.Pistola:
+              if (Input.GetKeyDown(KeyCode.R) && !recarregando && pistolaBalasGuardadas > 0 && pistolaBalasNoPente < pistolaTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && pistolaBalasGuardadas > 0 && pistolaBalasNoPente <= 0 ))
+              {
+                  podeAtirar = false;
+                  anim.SetTrigger("OnReload");
+                  recarregando = true;
+              }
+              break;
+
+          case TipoArma.Rifle:
+              if (Input.GetKeyDown(KeyCode.R) && !recarregando && rifleBalasGuardadas > 0 && rifleBalasNoPente < rifleTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && rifleBalasGuardadas > 0 && rifleBalasNoPente <= 0))
+              {
+                  podeAtirar = false;
+                  anim.SetTrigger("OnReload");
+                  recarregando = true;
+              }
+              break;
+
+          case TipoArma.Shotgun:
+              if (Input.GetKeyDown(KeyCode.R) && !recarregando && shotgunBalasGuardadas > 0  && shotgunBalasNoPente < rifleTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && shotgunBalasGuardadas > 0 && shotgunBalasNoPente <= 0))
+              {
+                  podeAtirar = false;
+                  anim.SetTrigger("OnReload");
+                  recarregando = true;
+              }
+              break;
+
+             
+      }                  
     }
 
     void inputArma()
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        // checa input do scroll do mouse
-        if (scroll > 0)
+        tempoDecorrido += Time.fixedDeltaTime;
+        if (Input.GetKeyDown(KeyCode.Alpha1) && nadaDesbloqueado && tempoDecorrido >= tempoDeTroca )
         {
-            // scroll para cima: alterna para a próxima arma
-            armaAtual++;
+            armaAtual = 0;
+            tempoDecorrido = 0f;
+            podeAtirar = true;
         }
-        else if (scroll < 0)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && pistolaDesbloqueado && tempoDecorrido >= tempoDeTroca)
         {
-            // scroll para baixo: alterna para a arma anterior
-            armaAtual--;
+            armaAtual = 1;
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && shotgunDesbloqueado && tempoDecorrido >= tempoDeTroca)
+        {
+            armaAtual = 2;
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && rifleDesbloqueado && tempoDecorrido >= tempoDeTroca)
+        {
+            armaAtual = 3;
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+
+        }
+
+
+        if (tempoDecorrido > tempoMaximo)
+        {
+            tempoDecorrido = tempoMaximo;
         }
 
         switch (armaAtual)
-            {
-                case 0: // Nenhuma arma equipada
-                if(nadaDesbloqueado)
-                {
-                    anim.runtimeAnimatorController = null;
-                    tipoArma = TipoArma.Nenhum;
-                    playerAnim.equipado = false;
-                }                
+        {
+              case 0: // Nenhuma arma equipada
+                  if (nadaDesbloqueado)
+                  {
+                      anim.runtimeAnimatorController = null;
+                      tipoArma = TipoArma.Nenhum;
+                      playerAnim.equipado = false;
+                      srGun.sprite = null;
+                      pontoDeFogo.localPosition = Vector3.zero;
+                  }
 
-                break;
+                  break;
 
 
-                 case 1: // Pistola
+              case 1: // Pistola
 
-                if (pistolaDesbloqueado)
-                {
-                    anim.runtimeAnimatorController = pistola;
-                    tipoArma = TipoArma.Pistola;
-                    playerAnim.equipado = true;
-                    anim.SetInteger("transition", 2);
-                    srGun.sortingLayerName = "Player ARM";
-                }
+                  if (pistolaDesbloqueado && armaAtual == 1)
+                  {
+                      anim.runtimeAnimatorController = pistola;
+                      tipoArma = TipoArma.Pistola;
+                      playerAnim.equipado = true;
+                      anim.SetInteger("transition", 2);
+                      srGun.sortingLayerName = "Player ARM";
+                      pontoDeFogo.localPosition = posicaoPontoDeFogoPistola;
+                  }
 
-                break;
+                  break;
 
-                case 2: // Shotgun
+              case 2: // Shotgun
 
-                if (shotgunDesbloqueado)
-                {
-                    anim.runtimeAnimatorController = shotgun;
-                    tipoArma = TipoArma.Shotgun;
-                    playerAnim.equipado = true;
-                    anim.SetInteger("transition", 2);
-                    srGun.sortingLayerName = "Player ARM";
-                }
+                  if (shotgunDesbloqueado && armaAtual == 2)
+                  {
+                      anim.runtimeAnimatorController = shotgun;
+                      tipoArma = TipoArma.Shotgun;
+                      playerAnim.equipado = true;
+                      anim.SetInteger("transition", 2);
+                      srGun.sortingLayerName = "Player ARM";
+                      pontoDeFogo.localPosition = posicaoPontoDeFogoShotgun;
+                  }
 
-                break;
+                  break;
 
-                
-                case 3: // Rifle
-                if (rifleDesbloqueado)
-                {                  
-                    anim.runtimeAnimatorController = rifle;
-                    tipoArma = TipoArma.Rifle;
-                    playerAnim.equipado = true;
-                    anim.SetInteger("transition", 2);
-                    srGun.sortingLayerName = "Player ARM";
-                }
 
-                break;
+              case 3: // Rifle
+
+                  if (rifleDesbloqueado && armaAtual == 3)
+                  {
+                      anim.runtimeAnimatorController = rifle;
+                      tipoArma = TipoArma.Rifle;
+                      playerAnim.equipado = true;
+                      anim.SetInteger("transition", 2);
+                      srGun.sortingLayerName = "Player ARM";
+                      pontoDeFogo.localPosition = posicaoPontoDeFogoRifle;
+                  }
+
+                  break;
+
+                  default: // Nenhuma arma equipada         
+                  armaAtual = 0;               
+                  break;
+        }
                
-                default: // Nenhuma arma equipada
-                anim.runtimeAnimatorController = null;
-                tipoArma = TipoArma.Nenhum;
-                playerAnim.equipado = false;
-                break;
-        }
-
-       if(armaAtual > 3)
-        {
-            armaAtual = 0;
-        }
-       else if (armaAtual < 0)
-        {
-            armaAtual = 3;
-        }
-
-       
     }
-
+  
     void CDTiro()
-    {
-        podeAtirar = true;
+    { 
+       podeAtirar = true;   
     }
 
-    void RecargaArma()
-    {
-        if (!recarregando && balasGuardadas > 0 && balasNoPente < tamanhoPente)
-        {
-            podeAtirar = false;
-            anim.SetTrigger("OnReload");
-            recarregando = true;
-        }
-    }
 
     void EndReload()
     {
-        int balasParaRecarregar = tamanhoPente - balasNoPente;
-        int balasDisponiveis = Mathf.Min(balasGuardadas, balasParaRecarregar);
-        balasNoPente += balasDisponiveis;
-        balasGuardadas -= balasDisponiveis;
+        switch (tipoArma)
+        {
+            case TipoArma.Pistola:
+                int pistolaBalasParaRecarregar = pistolaTamanhoPente - pistolaBalasNoPente;
+                int pistolaBalasDisponiveis = Mathf.Min(pistolaBalasGuardadas, pistolaBalasParaRecarregar);
+                pistolaBalasNoPente += pistolaBalasDisponiveis;
+                pistolaBalasGuardadas -= pistolaBalasDisponiveis;
+                podeAtirar = true;
+                recarregando = false;
+                break;
 
-        podeAtirar = true;
-        recarregando = false;
-        recarregado = true;
+            case TipoArma.Rifle:
+                int rifleBalasParaRecarregar = rifleTamanhoPente - rifleBalasNoPente;
+                int rifleBalasDisponiveis = Mathf.Min(rifleBalasGuardadas, rifleBalasParaRecarregar);
+                rifleBalasNoPente += rifleBalasDisponiveis;
+                rifleBalasGuardadas -= rifleBalasDisponiveis;
+                podeAtirar = true;
+                recarregando = false;
+                break;
+
+            case TipoArma.Shotgun:
+                int shotgunBalasParaRecarregar = shotgunTamanhoPente - shotgunBalasNoPente;
+                int shotgunBalasDisponiveis = Mathf.Min(shotgunBalasGuardadas, shotgunBalasParaRecarregar);
+                shotgunBalasNoPente += shotgunBalasDisponiveis;
+                shotgunBalasGuardadas -= shotgunBalasDisponiveis;
+                podeAtirar = true;
+                recarregando = false;
+                break;
+
+        }
+
     }
 
+    // SO TROCAR DE ARMA QUANDO AS ANIMS TERMINAREM   
+} 
 
 
-}
+
+
+

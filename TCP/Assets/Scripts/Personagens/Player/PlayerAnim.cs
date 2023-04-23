@@ -5,11 +5,11 @@ using UnityEngine;
 public class PlayerAnim : MonoBehaviour
 { 
     private Player player;
-    GameObject myObject;
-
     private Animator _anim;
-    public bool equipado;
     private Gun gun;
+    public bool equipado;
+    
+
 
 
     public Animator anim
@@ -20,7 +20,7 @@ public class PlayerAnim : MonoBehaviour
 
     private void Awake()
     {
-        myObject = GameObject.Find("arma");
+       
     }
 
     // Start is called before the first frame update
@@ -101,6 +101,7 @@ public class PlayerAnim : MonoBehaviour
                 anim.SetInteger("transition", 3);
            }
         }
+       
     }
 
     #endregion
@@ -112,35 +113,22 @@ public class PlayerAnim : MonoBehaviour
     {
         if (player.isRolling && !anim.GetCurrentAnimatorStateInfo(0).IsName("Roll"))
         {
-            if(equipado)        
-            {
-                anim.SetTrigger("isRoll");
-                player.isRolling = false;
-                player.canRoll = false;
-                myObject.SetActive(false);
-            }
-            else if (!equipado && gun.numArmasDesbloqueadas > 0)
-            {
-                anim.SetTrigger("isRoll");
-                player.isRolling = false;
-                player.canRoll = false;
-                myObject.SetActive(false);
-            }
-
-        }
-    }
-
-    void OnRollComplete()
-    {
-        player.canRoll = true;
-        if(gun.numArmasDesbloqueadas > 0 &&  gun.tipoArma != TipoArma.Nenhum)
-        {
-            myObject.SetActive(true);
+           anim.SetTrigger("isRoll");
+           player.isRolling = false;
+           player.canRoll = false;
+           gun.srGun.color = new Color(gun.srGun.color.r, gun.srGun.color.g, gun.srGun.color.b, 0f);
+           gun.podeAtirar = false;
         }
         
     }
 
+    void OnRollComplete()
+    {
+        player.canRoll = true;      
+        gun.srGun.color = new Color(gun.srGun.color.r, gun.srGun.color.g, gun.srGun.color.b, 1f);
+        gun.podeAtirar = true;
 
+    }
 
     #endregion
 

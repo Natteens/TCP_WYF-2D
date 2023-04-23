@@ -5,12 +5,13 @@ using UnityEngine;
 public class GunPackage : MonoBehaviour                         /// arrumar o GUN FIND OBJT  POIS ELE TA PEGANDO SO O GUN DO RIFLE NESSA CACETA 
 {
     [SerializeField] private Gun gun;
+   
     [SerializeField] private TipoArma tipoArma;
-    [SerializeField] private int municaoNoPacote;   
+    [SerializeField] private int municaoNoPacote;
+    [SerializeField] private int municaoRestante;
     [SerializeField] private Sprite pistolaSprite;
     [SerializeField] private Sprite rifleSprite;
-    [SerializeField] private Sprite shotgunSprite;
-    [SerializeField] private int municaoRestante;
+    [SerializeField] private Sprite shotgunSprite;   
     private Dictionary<TipoArma, Sprite> sprites;
 
     private void Awake()
@@ -28,7 +29,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
 
     private void Start()
     {
-        tipoArma = (TipoArma)Random.Range(0, 3);
+        tipoArma = (TipoArma)Random.Range(1, 4);
         switch (tipoArma)
         {
             case TipoArma.Pistola:
@@ -52,19 +53,25 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
     }
 
 
-    private void Update()
+     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 2f && gun.balasGuardadas < gun.maxBalasGuardadas)
-        {
-            if (tipoArma == gun.tipoArma)
+        PegarMunicao();
+    }
+
+    void PegarMunicao()
+{  
+    switch (tipoArma)
+    {
+        case TipoArma.Pistola:
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < 1f && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
             {
-                var balasQueCabemNoPente = gun.maxBalasGuardadas - gun.balasGuardadas;
+                var balasQueCabemNoPente = gun.pistolaMaxBalasGuardadas - gun.pistolaBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
                 var balasQueSeraoPegas = Mathf.Min(balasQueRestamNoPacote, balasQueCabemNoPente);
 
                 if (balasQueSeraoPegas > 0)
                 {
-                    gun.balasGuardadas += balasQueSeraoPegas;
+                    gun.pistolaBalasGuardadas += balasQueSeraoPegas;
                     municaoRestante -= balasQueSeraoPegas;
                 }
 
@@ -73,8 +80,49 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
                     Destroy(gameObject);
                 }
             }
-        }
+            break;
+
+        case TipoArma.Rifle:
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
+            {
+                var balasQueCabemNoPente = gun.rifleMaxBalasGuardadas - gun.rifleBalasGuardadas;
+                var balasQueRestamNoPacote = municaoRestante;
+                var balasQueSeraoPegas = Mathf.Min(balasQueRestamNoPacote, balasQueCabemNoPente);
+
+                if (balasQueSeraoPegas > 0)
+                {
+                    gun.rifleBalasGuardadas += balasQueSeraoPegas;
+                    municaoRestante -= balasQueSeraoPegas;
+                }
+
+                if (municaoRestante == 0)
+                {
+                    Destroy(gameObject);
+                }
+            }
+            break;
+
+        case TipoArma.Shotgun:
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
+            {
+                var balasQueCabemNoPente = gun.shotgunMaxBalasGuardadas - gun.shotgunBalasGuardadas;
+                var balasQueRestamNoPacote = municaoRestante;
+                var balasQueSeraoPegas = Mathf.Min(balasQueRestamNoPacote, balasQueCabemNoPente);
+
+                if (balasQueSeraoPegas > 0)
+                {
+                    gun.shotgunBalasGuardadas += balasQueSeraoPegas;
+                    municaoRestante -= balasQueSeraoPegas;
+                }
+
+                if (municaoRestante == 0)
+                {
+                    Destroy(gameObject);
+                }
+            }
+            break;
     }
+}
 
     private void OnDrawGizmos()
     {

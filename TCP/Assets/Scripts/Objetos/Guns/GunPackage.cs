@@ -63,7 +63,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
     switch (tipoArma)
     {
         case TipoArma.Pistola:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < 1f && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < 0.5f && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.pistolaMaxBalasGuardadas - gun.pistolaBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -83,7 +83,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
             break;
 
         case TipoArma.Rifle:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 0.5f && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.rifleMaxBalasGuardadas - gun.rifleBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -103,7 +103,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
             break;
 
         case TipoArma.Shotgun:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 0.5f && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.shotgunMaxBalasGuardadas - gun.shotgunBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -127,7 +127,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 2f);
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
     }
 }
 

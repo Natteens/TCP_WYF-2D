@@ -132,3 +132,5 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
 }
 
 
+///ARRUMAR A TROCA DE ARMAS !!!!!!!!!!
+

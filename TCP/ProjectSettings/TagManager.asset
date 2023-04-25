@@ -12,6 +12,8 @@ TagManager:
   - UI_MUNICAO
   - ItensColetaveis
   - Smoke
+  - MoveisEletrodomesticos
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -67,6 +69,9 @@ TagManager:
   - name: Objects
     uniqueID: 1905159863
     locked: 0
+  - name: Enemy
+    uniqueID: 1095123223
+    locked: 0
   - name: Player
     uniqueID: 2558752169
     locked: 0
@@ -85,9 +90,9 @@ TagManager:
   - name: Smoke
     uniqueID: 3578201947
     locked: 0
-  - name: 'MOUSE AIM '
-    uniqueID: 3511895867
-    locked: 0
   - name: Colisores
     uniqueID: 1360522443
+    locked: 0
+  - name: 'MOUSE AIM '
+    uniqueID: 3511895867
     locked: 0

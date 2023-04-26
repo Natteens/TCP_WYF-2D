@@ -28,12 +28,10 @@ public class Gun : MonoBehaviour
     float angle;
     [SerializeField] private bool _podeAtirar = false;
     public LayerMask layerJogador;
-    public bool estaNaMao = false;
-
-
+    
     #region ARMAS E MUNIÇÃO
 
-     public bool podeTrocarArma = true;
+    public bool podeTrocarArma = true;
     [SerializeField] private int armaAtual = 0; // valor da arma atual
     [SerializeField] public bool armaDesbloqueada = false;
     [SerializeField] public int numArmasDesbloqueadas;
@@ -42,9 +40,12 @@ public class Gun : MonoBehaviour
     [SerializeField] private bool _shotgunDesbloqueado = false; // indica se a shotgun está desbloqueada
     [SerializeField] private bool _pistolaDesbloqueado = false; // indica se a pistola está desbloqueada
 
+    public List<bool> armasDesbloqueadas = new List<bool>();
+
+
     [SerializeField] private RuntimeAnimatorController rifle, shotgun, pistola;
 
-
+    
 
     #region Balas
 
@@ -166,7 +167,13 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
-       
+
+        armasDesbloqueadas.Add(nadaDesbloqueado);
+        armasDesbloqueadas.Add(pistolaDesbloqueado);
+        armasDesbloqueadas.Add(shotgunDesbloqueado);
+        armasDesbloqueadas.Add(rifleDesbloqueado);
+
+
         pistolaMaxBalasGuardadas = 60;
         pistolaBalasGuardadas = Random.Range(10, 35);
         pistolaBalasNoPente = Random.Range(7, 12);
@@ -360,23 +367,23 @@ public class Gun : MonoBehaviour
 
         #region TROCAR DE ARMA COM SCROL DO MOUSE
 
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f && podeTrocarArma) // Scrolling para cima
-        {
-            armaAtual--;
-            if (armaAtual < 0) armaAtual = 3;
-            tempoDecorrido = 0f;
-            podeAtirar = true;
-            NaoTrocarDeArma();
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f && podeTrocarArma) // Scrolling para baixo
-        {
-            armaAtual++;
-            if (armaAtual > 3) armaAtual = 0;
-            tempoDecorrido = 0f;
-            podeAtirar = true;
-            NaoTrocarDeArma();
-        }
-        #endregion
+     ////   if (Input.GetAxis("Mouse ScrollWheel") > 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca) // Scroll para cima
+       // {
+       //     armaAtual--;
+       //     if (armaAtual < 0) armaAtual = 3;
+       //     tempoDecorrido = 0f;
+       //     podeAtirar = true;
+       //     NaoTrocarDeArma();
+       // }
+     ////   else if (Input.GetAxis("Mouse ScrollWheel") < 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca) // Scroll para baixo
+       // {
+       //     armaAtual++;
+       //     if (armaAtual > 3) armaAtual = 0;
+       //     tempoDecorrido = 0f;
+       //     podeAtirar = true;
+       //     NaoTrocarDeArma();
+       // }
+       #endregion
 
         #region TROCAR DE ARMA COM NUMEROS
 
@@ -387,34 +394,35 @@ public class Gun : MonoBehaviour
                 armaAtual = 1;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                PermitirTrocaDeArma();
+                NaoTrocarDeArma();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2) && pistolaDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 2;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                podeTrocarArma = false;
-               
+                NaoTrocarDeArma();
+
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3) && shotgunDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 3;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                podeTrocarArma = true;
-                
+                NaoTrocarDeArma();
+
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 0;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                podeTrocarArma = false;
-               
+                NaoTrocarDeArma();
+
             }
         }
 
+       
         
         #endregion
         switch (armaAtual)
@@ -427,7 +435,8 @@ public class Gun : MonoBehaviour
                       playerAnim.equipado = false;
                       srGun.sprite = null;
                       pontoDeFogo.localPosition = Vector3.zero;
-                  }
+                      PermitirTrocaDeArma();
+                }
 
                   break;
 
@@ -481,16 +490,11 @@ public class Gun : MonoBehaviour
                   default: // Nenhuma arma equipada         
                   armaAtual = 0;
                   recarregando = false;
+               //   PermitirTrocaDeArma();
                 break;
         }
-        
-        if(armaAtual == 0)
-        {
-            PermitirTrocaDeArma();
-        }
-    }   /// <summary>
-    ///  ARRUMAR O BUG DA TROCA DE ARMAS 
-    /// </summary>
+       
+    }   
   
     void CDTiro()
     { 
@@ -546,7 +550,8 @@ public class Gun : MonoBehaviour
         podeTrocarArma = false;
     }
 
-    // SO TROCAR DE ARMA QUANDO AS ANIMS TERMINAREM   
+
+   
 }
 
 

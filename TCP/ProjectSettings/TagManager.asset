@@ -81,9 +81,6 @@ TagManager:
   - name: Bullets
     uniqueID: 3155568843
     locked: 0
-  - name: Enviroments2
-    uniqueID: 125758165
-    locked: 0
   - name: Efeitos
     uniqueID: 2026061883
     locked: 0
@@ -92,6 +89,9 @@ TagManager:
     locked: 0
   - name: Colisores
     uniqueID: 1360522443
+    locked: 0
+  - name: Enviroments2
+    uniqueID: 125758165
     locked: 0
   - name: 'MOUSE AIM '
     uniqueID: 3511895867

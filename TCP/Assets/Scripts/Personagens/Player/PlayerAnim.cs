@@ -38,9 +38,16 @@ public class PlayerAnim : MonoBehaviour
         OnMove();
         OnRun();
         OnRoll();
-
+      
     }
 
+    private void FixedUpdate()
+    {
+        if(!equipado && gun.numArmasDesbloqueadas > 0)
+        {
+            gun.podeTrocarArma = true;
+        }
+    }
     #region Movement
 
     void OnMove()

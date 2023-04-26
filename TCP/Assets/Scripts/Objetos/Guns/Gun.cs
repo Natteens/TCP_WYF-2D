@@ -389,16 +389,16 @@ public class Gun : MonoBehaviour
 
         if (podeTrocarArma)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1) && nadaDesbloqueado && tempoDecorrido > tempoDeTroca)
+            if (Input.GetKeyDown(KeyCode.Alpha4) && nadaDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
-                armaAtual = 1;
+                armaAtual = 0;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
                 NaoTrocarDeArma();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2) && pistolaDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
-                armaAtual = 2;
+                armaAtual = 1;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
                 NaoTrocarDeArma();
@@ -406,15 +406,15 @@ public class Gun : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3) && shotgunDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
-                armaAtual = 3;
+                armaAtual = 2;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
                 NaoTrocarDeArma();
 
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha4) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
+            else if (Input.GetKeyDown(KeyCode.Alpha1) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
-                armaAtual = 0;
+                armaAtual = 3;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
                 NaoTrocarDeArma();

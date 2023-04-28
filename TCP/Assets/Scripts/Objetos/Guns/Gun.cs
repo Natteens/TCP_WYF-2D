@@ -49,8 +49,8 @@ public class Gun : MonoBehaviour
 
     #region Balas
 
-    [SerializeField] private int _balasRecarregadas = 0;      // numero de balas recarregadas 
-    [SerializeField] private bool _recarregando = false;      // verificação pra saber se esta dando reload
+    [SerializeField] private int _balasRecarregadas = 0;    
+    [SerializeField] private bool _recarregando = false;      
 
     public float tempoDeTroca = 2f;
     public int tempoMaximo = 3;
@@ -396,7 +396,7 @@ public class Gun : MonoBehaviour
                 podeAtirar = true;
                 NaoTrocarDeArma();
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && pistolaDesbloqueado && tempoDecorrido > tempoDeTroca)
+            else if (Input.GetKeyDown(KeyCode.Alpha1) && pistolaDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 1;
                 tempoDecorrido = 0f;
@@ -404,7 +404,7 @@ public class Gun : MonoBehaviour
                 NaoTrocarDeArma();
 
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3) && shotgunDesbloqueado && tempoDecorrido > tempoDeTroca)
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && shotgunDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 2;
                 tempoDecorrido = 0f;
@@ -412,7 +412,7 @@ public class Gun : MonoBehaviour
                 NaoTrocarDeArma();
 
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha1) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
+            else if (Input.GetKeyDown(KeyCode.Alpha3) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 3;
                 tempoDecorrido = 0f;
@@ -490,7 +490,7 @@ public class Gun : MonoBehaviour
                   default: // Nenhuma arma equipada         
                   armaAtual = 0;
                   recarregando = false;
-               //   PermitirTrocaDeArma();
+                  PermitirTrocaDeArma();
                 break;
         }
        

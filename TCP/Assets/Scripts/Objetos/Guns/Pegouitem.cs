@@ -35,19 +35,19 @@ public class Pegouitem : MonoBehaviour
                                 gun.rifleDesbloqueado = true;
                                 gun.numArmasDesbloqueadas++;
                                 gun.podeAtirar = true;
-                            //  gun.estaNaMao = true; 
+                             
                             break;
                             case TipoArma.Shotgun:
                                 gun.shotgunDesbloqueado = true;
                                 gun.numArmasDesbloqueadas++;
                                 gun.podeAtirar = true;
-                           //   gun.estaNaMao = true; 
+                        
                             break;
                             case TipoArma.Pistola:
                                 gun.pistolaDesbloqueado = true;
                                 gun.numArmasDesbloqueadas++;
                                 gun.podeAtirar = true;
-                            //  gun.estaNaMao = true; 
+                         
                             break;
                         }
                    

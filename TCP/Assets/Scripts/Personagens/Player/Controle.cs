@@ -19,7 +19,7 @@ public class Controle : MonoBehaviour
     public float tempoMaximoSmoke = 120f; // 2 minutos em segundos
     private float tempoDecorridoSmoke = 0f;
     private bool estaNaSmoke = false;
-   // private bool estaComMascara = false;
+ 
 
 
     void Start()

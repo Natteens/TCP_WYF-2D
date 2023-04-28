@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunPackage : MonoBehaviour                         /// arrumar o GUN FIND OBJT  POIS ELE TA PEGANDO SO O GUN DO RIFLE NESSA CACETA 
+public class GunPackage : MonoBehaviour                         
 {
     [SerializeField] private Gun gun;
    
@@ -33,19 +33,19 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
         switch (tipoArma)
         {
             case TipoArma.Pistola:
-                municaoNoPacote = Random.Range(6, 20);
+                municaoNoPacote = Random.Range(16, 20);
                 municaoRestante = municaoNoPacote;
                 GetComponent<SpriteRenderer>().sprite = sprites[TipoArma.Pistola];
                 break;
 
             case TipoArma.Rifle:
-                municaoNoPacote = Random.Range(1, 30);
+                municaoNoPacote = Random.Range(15, 30);
                 municaoRestante = municaoNoPacote;
                 GetComponent<SpriteRenderer>().sprite = sprites[TipoArma.Rifle];
                 break;
 
             case TipoArma.Shotgun:
-                municaoNoPacote = Random.Range(2, 12);
+                municaoNoPacote = Random.Range(5, 12);
                 municaoRestante = municaoNoPacote;
                 GetComponent<SpriteRenderer>().sprite = sprites[TipoArma.Shotgun];
                 break;
@@ -63,7 +63,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
     switch (tipoArma)
     {
         case TipoArma.Pistola:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < 0.5f && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < 1f && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.pistolaMaxBalasGuardadas - gun.pistolaBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -83,7 +83,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
             break;
 
         case TipoArma.Rifle:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 0.5f && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.rifleMaxBalasGuardadas - gun.rifleBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -103,7 +103,7 @@ public class GunPackage : MonoBehaviour                         /// arrumar o GU
             break;
 
         case TipoArma.Shotgun:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 0.5f && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.shotgunMaxBalasGuardadas - gun.shotgunBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;

@@ -208,7 +208,7 @@ public class Gun : MonoBehaviour
     {       
         inputArma();
         Atirar();
-        ReloadArma();  
+        ReloadArma();       
     }
 
     void FixedUpdate()
@@ -317,9 +317,10 @@ public class Gun : MonoBehaviour
 
     void ReloadArma()
     {
-  
-      switch (tipoArma)
-            {
+       
+
+        switch (tipoArma)
+      {
                 case TipoArma.Pistola:
                     if (Input.GetKeyDown(KeyCode.R) && !recarregando && pistolaBalasGuardadas > 0 && pistolaBalasNoPente < pistolaTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && pistolaBalasGuardadas > 0 && pistolaBalasNoPente <= 0))
                     {
@@ -341,7 +342,7 @@ public class Gun : MonoBehaviour
                     break;
 
                 case TipoArma.Shotgun:
-                    if (Input.GetKeyDown(KeyCode.R) && !recarregando && shotgunBalasGuardadas > 0 && shotgunBalasNoPente < rifleTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && shotgunBalasGuardadas > 0 && shotgunBalasNoPente <= 0))
+                    if (Input.GetKeyDown(KeyCode.R) && !recarregando && shotgunBalasGuardadas > 0 && shotgunBalasNoPente < shotgunTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && shotgunBalasGuardadas > 0 && shotgunBalasNoPente <= 0))
                     {
                         podeAtirar = false;
                         anim.SetTrigger("OnReload");
@@ -351,8 +352,48 @@ public class Gun : MonoBehaviour
                     break;
 
 
-            }
-          
+      }
+
+        
+    }
+
+    void EndReload()
+    {
+      
+        switch (tipoArma)
+        {
+            case TipoArma.Pistola:
+                int pistolaBalasParaRecarregar = pistolaTamanhoPente - pistolaBalasNoPente;
+                int pistolaBalasDisponiveis = Mathf.Min(pistolaBalasGuardadas, pistolaBalasParaRecarregar);
+                pistolaBalasNoPente += pistolaBalasDisponiveis;
+                pistolaBalasGuardadas -= pistolaBalasDisponiveis;
+                podeAtirar = true;
+                recarregando = false;
+                PermitirTrocaDeArma();
+                break;
+
+            case TipoArma.Rifle:
+                int rifleBalasParaRecarregar = rifleTamanhoPente - rifleBalasNoPente;
+                int rifleBalasDisponiveis = Mathf.Min(rifleBalasGuardadas, rifleBalasParaRecarregar);
+                rifleBalasNoPente += rifleBalasDisponiveis;
+                rifleBalasGuardadas -= rifleBalasDisponiveis;
+                podeAtirar = true;
+                recarregando = false;
+                PermitirTrocaDeArma();
+                break;
+
+            case TipoArma.Shotgun:
+                int shotgunBalasParaRecarregar = shotgunTamanhoPente - shotgunBalasNoPente;
+                int shotgunBalasDisponiveis = Mathf.Min(shotgunBalasGuardadas, shotgunBalasParaRecarregar);
+                shotgunBalasNoPente += shotgunBalasDisponiveis;
+                shotgunBalasGuardadas -= shotgunBalasDisponiveis;
+                podeAtirar = true;
+                recarregando = false;
+                PermitirTrocaDeArma();
+                break;
+
+        }
+
     }
 
     void inputArma()
@@ -500,44 +541,6 @@ public class Gun : MonoBehaviour
     { 
        podeAtirar = true;
        PermitirTrocaDeArma();
-    }
-
-    void EndReload()
-    {
-        switch (tipoArma)
-        {
-            case TipoArma.Pistola:
-                int pistolaBalasParaRecarregar = pistolaTamanhoPente - pistolaBalasNoPente;
-                int pistolaBalasDisponiveis = Mathf.Min(pistolaBalasGuardadas, pistolaBalasParaRecarregar);
-                pistolaBalasNoPente += pistolaBalasDisponiveis;
-                pistolaBalasGuardadas -= pistolaBalasDisponiveis;
-                podeAtirar = true;
-                recarregando = false;
-                PermitirTrocaDeArma();
-                break;
-
-            case TipoArma.Rifle:
-                int rifleBalasParaRecarregar = rifleTamanhoPente - rifleBalasNoPente;
-                int rifleBalasDisponiveis = Mathf.Min(rifleBalasGuardadas, rifleBalasParaRecarregar);
-                rifleBalasNoPente += rifleBalasDisponiveis;
-                rifleBalasGuardadas -= rifleBalasDisponiveis;
-                podeAtirar = true;
-                recarregando = false;
-                PermitirTrocaDeArma();
-                break;
-
-            case TipoArma.Shotgun:
-                int shotgunBalasParaRecarregar = shotgunTamanhoPente - shotgunBalasNoPente;
-                int shotgunBalasDisponiveis = Mathf.Min(shotgunBalasGuardadas, shotgunBalasParaRecarregar);
-                shotgunBalasNoPente += shotgunBalasDisponiveis;
-                shotgunBalasGuardadas -= shotgunBalasDisponiveis;
-                podeAtirar = true;
-                recarregando = false;
-                PermitirTrocaDeArma();
-                break;
-
-        }
-
     }
 
     void PermitirTrocaDeArma()

@@ -49,20 +49,19 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        //   OnInput();     
-        //   OnRoll();
-       
+           OnInput();
+           OnRun();
+           
+           if (controle.EstaminaAtual >= 15)
+        {
+            OnRoll();
+        }
+
     }
 
     void FixedUpdate()
-    {
-        OnInput();       
-        OnMove();
-        OnRun();
-        if(controle.EstaminaAtual >= 15)
-        {
-            OnRoll();
-        }    
+    {          
+        OnMove();       
     }
 
     #region Movement
@@ -82,16 +81,16 @@ public class Player : MonoBehaviour
      void OnRun()
     {
        
-        if (Input.GetKeyDown(KeyCode.LeftShift) && direction.magnitude > 0f && controle.EstaminaAtual > 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && direction.sqrMagnitude > 0f && controle.EstaminaAtual > 0)
         {
-           // direction.Normalize();
+            direction.Normalize();
             speed = runSpeed;
             isRunning = true;
            
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || direction.sqrMagnitude == 0 )
+        if (Input.GetKeyUp(KeyCode.LeftShift) || direction.sqrMagnitude == 0f )
         {
-           // direction.Normalize();
+            direction.Normalize();
             speed = initialSpeed;
             isRunning = false;
         }

@@ -1,0 +1,44 @@
+{
+	"$baseURI": "https://yal.cc/r/20/pixelfont/",
+	"$version": "1.0",
+	"in-glyphs": [
+		"ABCDEFGHIJ",
+		"KLMNOPQRST",
+		"UVWXYZ.,:;",
+		"+-_^$12345",
+		"67890[]()=",
+		"~#'!?"
+	],
+	"glyph-color": "auto",
+	"in-kerning": [
+		""
+	],
+	"glyph-width": 14,
+	"glyph-height": 14,
+	"glyph-ofs-x": 1,
+	"glyph-ofs-y": 1,
+	"glyph-sep-x": 1,
+	"glyph-sep-y": 1,
+	"glyph-base-x": 0,
+	"glyph-baseline": 12,
+	"glyph-spacing": 1,
+	"font-is-mono": false,
+	"font-em-square": 1024,
+	"font-line-gap": 0,
+	"font-ascend": 640,
+	"font-descend": -1536,
+	"font-px-size": 160,
+	"font-name": "Natteenss Font",
+	"font-author": "@Natteenss",
+	"font-copy": "(c)",
+	"font-version": "Version 1.0",
+	"font-desc": "Sweet fonts to leave your worries behind you",
+	"font-license": "You have the permission",
+	"font-license-url": "",
+	"font-sample-text": "Hello!",
+	"font-preview-text": [
+		"APRENDI A FAZER FONTE ",
+		"EM PIXEL ART KKKKKK",
+		"KKKKKKKKKKKKKKKKKK"
+	]
+}

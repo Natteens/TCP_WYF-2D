@@ -15,15 +15,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Gun gun;
     [SerializeField] private Controle controle;
 
-   public int energiaGasta = 1;
-    
+     [Range(1, 5)]public int energiaGasta;
 
-    private Rigidbody2D rig;
-    
+    private Rigidbody2D rig;  
     private bool _isRunning;
     private bool _isRolling;
     private Vector2 _direction;
     
+    #region get set
 
     public Vector2 direction
     {
@@ -40,7 +39,7 @@ public class Player : MonoBehaviour
         get { return _isRolling; }
         set { _isRolling = value; }
     }
-
+    #endregion
     private void Start()
     {
         rig = GetComponent<Rigidbody2D>();

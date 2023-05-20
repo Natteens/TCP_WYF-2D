@@ -1,104 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class Inimigo : MonoBehaviour
 {
     public float velocidade;
     public float distanciaDeVisao;
     public float distanciaDeAtaque;
-    public float tempoDeEspera;
     public Transform posicaoInicial;
-    public int dano;
+    [Range(1, 30)] public int dano;
 
     private Transform jogador;
-    private Rigidbody2D rig;
     private Animator anim;
+    private AIPath aiPath;
     private bool atacando = false;
-    private bool Spawn = false;
-    private float tempoDeEsperaInicial;
     private bool voltandoParaPosicaoInicial = false;
+
+    private enum EstadoInimigo
+    {
+        Idle,
+        Seguindo,
+        Atacando,
+        Voltando
+    }
+
+    private EstadoInimigo estadoAtual;
 
     private void Start()
     {
         jogador = GameObject.FindGameObjectWithTag("Player").transform;
-        rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        tempoDeEsperaInicial = tempoDeEspera;
+        aiPath = GetComponent<AIPath>();
+
+        estadoAtual = EstadoInimigo.Idle;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         float distancia = Vector2.Distance(transform.position, jogador.position);
 
-        if (distancia < distanciaDeVisao && !atacando)
+        switch (estadoAtual)
         {
-            SeguirJogador(distancia);
-        }
-        else
-        {
-            VoltarPosicaoInicial();
+            case EstadoInimigo.Idle:
+                if (distancia < distanciaDeVisao)
+                {
+                    estadoAtual = EstadoInimigo.Seguindo;
+                }
+                break;
+
+            case EstadoInimigo.Seguindo:
+                if (distancia > distanciaDeAtaque)
+                {
+                    SeguirJogador();
+                }
+                else
+                {
+                    estadoAtual = EstadoInimigo.Atacando;
+                }
+                break;
+
+            case EstadoInimigo.Atacando:
+                if (distancia > distanciaDeAtaque)
+                {
+                    estadoAtual = EstadoInimigo.Seguindo;
+                }
+                else if (!atacando)
+                {
+                    StartCoroutine(ExecutarAtaque());
+                }
+                break;
+
+            case EstadoInimigo.Voltando:
+                VoltarPosicaoInicial();
+                break;
         }
     }
 
-    private void SeguirJogador(float distancia)
+    private void SeguirJogador()
     {
-        if (!voltandoParaPosicaoInicial)
-        {
-            if (distancia > distanciaDeAtaque)
-            {
-                anim.SetInteger("transition", 2); // Walking
-                Vector2 direcao = jogador.position - transform.position;
-                rig.velocity = direcao.normalized * velocidade;
-                Flip(direcao.x);
-            }
-            else
-            {
-                anim.SetInteger("transition", 1); // Idle
-                rig.velocity = Vector2.zero;
-                atacando = true;
-                anim.SetBool("Atacando", true);
-            }
-        }
-        else
-        {
-            anim.SetInteger("transition", 2); // Walking
-            Vector2 direcao = posicaoInicial.position - transform.position;
-            rig.velocity = direcao.normalized * velocidade;
-            Flip(direcao.x);
-
-            if (Vector2.Distance(transform.position, posicaoInicial.position) < 0.1f)
-            {
-                voltandoParaPosicaoInicial = false;
-            }
-        }
+        anim.SetInteger("transition", 2); // Walking
+        aiPath.enabled = true;
     }
 
     private void VoltarPosicaoInicial()
     {
         anim.SetInteger("transition", 1); // Idle
-        rig.velocity = Vector2.zero;
+        aiPath.enabled = true;
 
-        if (tempoDeEspera <= 0)
+        if (Vector2.Distance(transform.position, posicaoInicial.position) <= 0.1f)
         {
-            tempoDeEspera = tempoDeEsperaInicial;
-            voltandoParaPosicaoInicial = true;
-        }
-        else
-        {
-            tempoDeEspera -= Time.deltaTime;
-        }
-    }
-
-    private void Flip(float direcao)
-    {
-        if (direcao < 0)
-        {
-            transform.eulerAngles = new Vector2(0, 180);
-        }
-        else if (direcao > 0)
-        {
-            transform.eulerAngles = new Vector2(0, 0);
+            voltandoParaPosicaoInicial = false;
+            aiPath.enabled = false;
+            estadoAtual = EstadoInimigo.Idle;
         }
     }
 
@@ -106,18 +100,44 @@ public class Inimigo : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            AplicarDano(collision.gameObject.GetComponent<Controle>());
+            estadoAtual = EstadoInimigo.Seguindo;
         }
     }
 
-    private void AplicarDano(Controle controle)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        controle.VidaAtual -= dano;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            estadoAtual = EstadoInimigo.Voltando;
+        }
     }
 
-    public void FimDeAtaque()
+    private void CausarDano()
     {
-        atacando = false;
+        float distancia = Vector2.Distance(transform.position, jogador.position);
+        if (distancia <= distanciaDeAtaque)
+        {
+            jogador.GetComponent<Controle>().VidaAtual -= dano;
+        }
+    }
+
+    private IEnumerator ExecutarAtaque()
+    {
+        atacando = true;
+        anim.SetInteger("transition", 1); // Idle
+
+        yield return new WaitForSeconds(1f); // Tempo de espera antes do ataque, ajuste conforme necessário
+
+        anim.SetBool("Atacando", true);
+        yield return new WaitForSeconds(0.5f); // Duração do ataque, ajuste conforme necessário
+        CausarDano(); // Chama o método para causar dano
+
+        yield return new WaitForSeconds(1f); // Tempo de espera após o ataque, ajuste conforme necessário
+
         anim.SetBool("Atacando", false);
+        atacando = false;
+        estadoAtual = EstadoInimigo.Seguindo;
     }
 }
+
+

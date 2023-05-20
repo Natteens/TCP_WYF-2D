@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum TipoArma
 {
     Nenhum,
@@ -10,28 +11,35 @@ public enum TipoArma
 }
 public class Gun : MonoBehaviour
 {
+    
+    [Header("Tipo de Arma")]
+
     [SerializeField] private PlayerAnim playerAnim;
     [SerializeField] private TipoArma _tipoArma;
     [SerializeField] private Animator anim;
-    
+    [SerializeField] private SpriteRenderer _srGun;
+    [SerializeField] GameObject tiro;   
     Vector2 mousePosi;
     Vector2 dirArma;
-
-    [SerializeField] private SpriteRenderer _srGun;
-    [SerializeField] GameObject tiro;
-
+    
+    [Space(20)]
+     [Header("Posição da Mira")]
     [SerializeField] Transform pontoDeFogo;
     [SerializeField] private Vector3 posicaoPontoDeFogoPistola = new Vector3(0f, 0f, 0f);
     [SerializeField] private Vector3 posicaoPontoDeFogoRifle = new Vector3(1.2f, 0.07f, 0f);
-    [SerializeField] private Vector3 posicaoPontoDeFogoShotgun = new Vector3(0.7f, 0f, 0f);
-
-    float angle;
+    [SerializeField] private Vector3 posicaoPontoDeFogoShotgun = new Vector3(0.7f, 0f, 0f);   
     [SerializeField] private bool _podeAtirar = false;
     public LayerMask layerJogador;
-    
+    float angle;
+
     #region ARMAS E MUNIÇÃO
 
+     [Space(20)]
+     [Header("Armas")]
+
+    public List<TipoArma> armasDesbloqueadas = new List<TipoArma>();
     public bool podeTrocarArma = true;
+    bool AnimRecarga = false;
     [SerializeField] private int armaAtual = 0; // valor da arma atual
     [SerializeField] public bool armaDesbloqueada = false;
     [SerializeField] public int numArmasDesbloqueadas;
@@ -39,50 +47,69 @@ public class Gun : MonoBehaviour
     [SerializeField] private bool _rifleDesbloqueado = false;   // indica se o rifle está desbloqueado
     [SerializeField] private bool _shotgunDesbloqueado = false; // indica se a shotgun está desbloqueada
     [SerializeField] private bool _pistolaDesbloqueado = false; // indica se a pistola está desbloqueada
-
-    public List<bool> armasDesbloqueadas = new List<bool>();
-
-
+  
     [SerializeField] private RuntimeAnimatorController rifle, shotgun, pistola;
-
     
 
     #region Balas
 
+    [Space(20)]
+     [Header("Balas")]
     [SerializeField] private int _balasRecarregadas = 0;    
     [SerializeField] private bool _recarregando = false;      
-
     public float tempoDeTroca = 2f;
     public int tempoMaximo = 3;
     public float tempoDecorrido = 0f;
 
     #region VAR ARMAS
     // Pistola
-    public int pistolaMaxBalasGuardadas;
-    public int pistolaBalasGuardadas;
-    public int pistolaBalasNoPente;
-    public int pistolaTamanhoPente;
-    public int pistolaNumBullets;
-    public float pistolaAngleBetweenBullets;
-    public float pistolaBulletSpread;
+  [HideInInspector]
+  public int pistolaMaxBalasGuardadas;
 
-    // Shotgun
-    public int shotgunMaxBalasGuardadas;
-    public int shotgunBalasGuardadas;
-    public int shotgunBalasNoPente;
-    public int shotgunTamanhoPente;
-    public int shotgunNumBullets;
-    public float shotgunAngleBetweenBullets;
-    public float shotgunBulletSpread;
+  public int pistolaBalasGuardadas;
+  public int pistolaBalasNoPente;
 
-    // Rifle
-    public int rifleMaxBalasGuardadas;
-    public int rifleBalasGuardadas;
-    public int rifleBalasNoPente;
-    public int rifleTamanhoPente;
-    public int rifleNumBullets;
-    public float rifleAngleBetweenBullets;
-    public float rifleBulletSpread;
+  [HideInInspector]
+  public int pistolaTamanhoPente;
+  [HideInInspector]
+  public int pistolaNumBullets;
+  [HideInInspector]
+  public float pistolaAngleBetweenBullets;
+  [HideInInspector]
+  public float pistolaBulletSpread;
+
+  // Shotgun
+  [HideInInspector]
+  public int shotgunMaxBalasGuardadas;
+
+  public int shotgunBalasGuardadas;
+  public int shotgunBalasNoPente;
+
+  [HideInInspector]
+  public int shotgunTamanhoPente;
+  [HideInInspector]
+  public int shotgunNumBullets;
+  [HideInInspector]
+  public float shotgunAngleBetweenBullets;
+  [HideInInspector]
+  public float shotgunBulletSpread;
+
+ 
+  // Rifle
+  [HideInInspector]
+  public int rifleMaxBalasGuardadas;
+
+  public int rifleBalasGuardadas;
+  public int rifleBalasNoPente;
+
+  [HideInInspector]
+  public int rifleTamanhoPente;
+  [HideInInspector]
+  public int rifleNumBullets;
+  [HideInInspector]
+  public float rifleAngleBetweenBullets;
+  [HideInInspector]
+  public float rifleBulletSpread;
 
     #endregion
 
@@ -162,17 +189,15 @@ public class Gun : MonoBehaviour
         anim = GetComponent<Animator>();
         GameObject playerObject = GameObject.Find("Player");
         playerAnim = playerObject.GetComponent<PlayerAnim>();
-
     }
 
     void Start()
     {
 
-        armasDesbloqueadas.Add(nadaDesbloqueado);
-        armasDesbloqueadas.Add(pistolaDesbloqueado);
-        armasDesbloqueadas.Add(shotgunDesbloqueado);
-        armasDesbloqueadas.Add(rifleDesbloqueado);
-
+        armasDesbloqueadas.Add(TipoArma.Nenhum);
+        armasDesbloqueadas.Add(TipoArma.Pistola);
+        armasDesbloqueadas.Add(TipoArma.Rifle);
+        armasDesbloqueadas.Add(TipoArma.Shotgun);
 
         pistolaMaxBalasGuardadas = 60;
         pistolaBalasGuardadas = Random.Range(10, 35);
@@ -213,8 +238,7 @@ public class Gun : MonoBehaviour
 
     void FixedUpdate()
     {
-        FollowMouse();
-
+        FollowMouse();     
     }
 
     void FollowMouse()
@@ -313,48 +337,53 @@ public class Gun : MonoBehaviour
 
           //  podeAtirar = false;
         }
+       
     }
 
     void ReloadArma()
-    {
-       
+    {     
+        if (!AnimRecarga)
+        {
+            switch (tipoArma)
+            {
+              case TipoArma.Pistola:
+                  if (Input.GetKeyDown(KeyCode.R) && !recarregando && pistolaBalasGuardadas > 0 && pistolaBalasNoPente < pistolaTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && pistolaBalasGuardadas > 0 && pistolaBalasNoPente <= 0))
+                  {
+                      recarregando = true;
+                      AnimRecarga = true;
+                      podeAtirar = false;
+                      anim.SetTrigger("OnReload");
+                      NaoTrocarDeArma();
+                      AnimRecarga = true;
+                  }
+                  break;
 
-        switch (tipoArma)
-      {
-                case TipoArma.Pistola:
-                    if (Input.GetKeyDown(KeyCode.R) && !recarregando && pistolaBalasGuardadas > 0 && pistolaBalasNoPente < pistolaTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && pistolaBalasGuardadas > 0 && pistolaBalasNoPente <= 0))
-                    {
-                        podeAtirar = false;
-                        anim.SetTrigger("OnReload");
-                        recarregando = true;
-                        NaoTrocarDeArma();
-                    }
-                    break;
+              case TipoArma.Rifle:
+                  if (Input.GetKeyDown(KeyCode.R) && !recarregando && rifleBalasGuardadas > 0 && rifleBalasNoPente < rifleTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && rifleBalasGuardadas > 0 && rifleBalasNoPente <= 0))
+                  {
+                      recarregando = true;
+                       AnimRecarga = true;
+                      podeAtirar = false;
+                      anim.SetTrigger("OnReload");
+                       NaoTrocarDeArma();
 
-                case TipoArma.Rifle:
-                    if (Input.GetKeyDown(KeyCode.R) && !recarregando && rifleBalasGuardadas > 0 && rifleBalasNoPente < rifleTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && rifleBalasGuardadas > 0 && rifleBalasNoPente <= 0))
-                    {
-                        podeAtirar = false;
-                        anim.SetTrigger("OnReload");
-                        recarregando = true;
-                        NaoTrocarDeArma();
-                    }
-                    break;
+                  }
+                  break;
 
-                case TipoArma.Shotgun:
-                    if (Input.GetKeyDown(KeyCode.R) && !recarregando && shotgunBalasGuardadas > 0 && shotgunBalasNoPente < shotgunTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && shotgunBalasGuardadas > 0 && shotgunBalasNoPente <= 0))
-                    {
-                        podeAtirar = false;
-                        anim.SetTrigger("OnReload");
-                        recarregando = true;
-                        NaoTrocarDeArma();
-                    }
-                    break;
+              case TipoArma.Shotgun:
+                  if (Input.GetKeyDown(KeyCode.R) && !recarregando && shotgunBalasGuardadas > 0 && shotgunBalasNoPente < shotgunTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && shotgunBalasGuardadas > 0 && shotgunBalasNoPente <= 0))
+                  {
+                      recarregando = true;
+                      AnimRecarga = true;
+                      podeAtirar = false;
+                      anim.SetTrigger("OnReload");
+                      NaoTrocarDeArma();
 
-
-      }
-
-        
+                  }
+                  break;               
+            } 
+                   
+        }
     }
 
     void EndReload()
@@ -370,6 +399,7 @@ public class Gun : MonoBehaviour
                 podeAtirar = true;
                 recarregando = false;
                 PermitirTrocaDeArma();
+                AnimRecarga = false;
                 break;
 
             case TipoArma.Rifle:
@@ -380,6 +410,7 @@ public class Gun : MonoBehaviour
                 podeAtirar = true;
                 recarregando = false;
                 PermitirTrocaDeArma();
+                AnimRecarga = false;
                 break;
 
             case TipoArma.Shotgun:
@@ -390,9 +421,11 @@ public class Gun : MonoBehaviour
                 podeAtirar = true;
                 recarregando = false;
                 PermitirTrocaDeArma();
+                AnimRecarga = false;
                 break;
 
         }
+        
 
     }
 
@@ -406,24 +439,29 @@ public class Gun : MonoBehaviour
             tempoDecorrido = tempoMaximo;
         }
 
-        #region TROCAR DE ARMA COM SCROL DO MOUSE
+       #region TROCAR DE ARMA COM SCROL DO MOUSE
 
-     ////   if (Input.GetAxis("Mouse ScrollWheel") > 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca) // Scroll para cima
-       // {
-       //     armaAtual--;
-       //     if (armaAtual < 0) armaAtual = 3;
-       //     tempoDecorrido = 0f;
-       //     podeAtirar = true;
-       //     NaoTrocarDeArma();
-       // }
-     ////   else if (Input.GetAxis("Mouse ScrollWheel") < 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca) // Scroll para baixo
-       // {
-       //     armaAtual++;
-       //     if (armaAtual > 3) armaAtual = 0;
-       //     tempoDecorrido = 0f;
-       //     podeAtirar = true;
-       //     NaoTrocarDeArma();
-       // }
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        {
+            armaAtual--;
+            if (armaAtual < 0) armaAtual = armasDesbloqueadas.Count - 1;
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+            PermitirTrocaDeArma();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        {
+            armaAtual++;
+            if (armaAtual > armasDesbloqueadas.Count - 1) armaAtual = 0;
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+           PermitirTrocaDeArma();
+        }
+
+        TipoArma armaSelecionada = armasDesbloqueadas[armaAtual];
+    
+
+
        #endregion
 
         #region TROCAR DE ARMA COM NUMEROS
@@ -435,14 +473,14 @@ public class Gun : MonoBehaviour
                 armaAtual = 0;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                NaoTrocarDeArma();
+                PermitirTrocaDeArma();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha1) && pistolaDesbloqueado && tempoDecorrido > tempoDeTroca)
             {
                 armaAtual = 1;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                NaoTrocarDeArma();
+                PermitirTrocaDeArma();
 
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2) && shotgunDesbloqueado && tempoDecorrido > tempoDeTroca)
@@ -450,7 +488,7 @@ public class Gun : MonoBehaviour
                 armaAtual = 2;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                NaoTrocarDeArma();
+                PermitirTrocaDeArma();
 
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
@@ -458,7 +496,7 @@ public class Gun : MonoBehaviour
                 armaAtual = 3;
                 tempoDecorrido = 0f;
                 podeAtirar = true;
-                NaoTrocarDeArma();
+                PermitirTrocaDeArma();
 
             }
         }
@@ -553,9 +591,26 @@ public class Gun : MonoBehaviour
         podeTrocarArma = false;
     }
 
+    void DesbloquearArma(TipoArma tipo)
+    {
+        if (!armasDesbloqueadas.Contains(tipo))
+        {
+            armasDesbloqueadas.Add(tipo);
+        }
+    }
+
+    void BloquearArma(TipoArma tipo)
+    {
+        if (armasDesbloqueadas.Contains(tipo))
+        {
+            armasDesbloqueadas.Remove(tipo);
+        }
+    }
+}
+
 
    
-}
+
 
 
 

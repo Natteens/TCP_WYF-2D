@@ -255,7 +255,7 @@ public class Inimigo : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, jogador.position - transform.position);
     }
 }

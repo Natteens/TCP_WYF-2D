@@ -64,7 +64,7 @@ public class GunPackage : MonoBehaviour
     switch (tipoArma)
     {
         case TipoArma.Pistola:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < DistanciaPegar && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < DistanciaPegar && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.pistolaMaxBalasGuardadas - gun.pistolaBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -128,7 +128,7 @@ public class GunPackage : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 0.5f);
+        Gizmos.DrawWireSphere(transform.position, DistanciaPegar);
     }
 }
 

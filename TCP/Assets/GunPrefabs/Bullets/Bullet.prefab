@@ -153,3 +153,7 @@ MonoBehaviour:
     m_Bits: 49015
   effect: {fileID: 5997526721847261704, guid: 81e6647448ca9eb42b23b218c56e8eea, type: 3}
   knockbackForce: 5
+  tipoArma: 0
+  PistolaDamage: 20
+  ShotgunDamage: 50
+  RifleDamage: 30

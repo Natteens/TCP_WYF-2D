@@ -164,7 +164,7 @@ MonoBehaviour:
   distanciaDeVisao: 15
   distanciaMaxima: 15
   distanciaDeAtaque: 2
-  dano: 15
+  dano: 25
   layersDano:
     serializedVersion: 2
     m_Bits: 64

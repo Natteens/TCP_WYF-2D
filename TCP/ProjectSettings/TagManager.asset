@@ -14,6 +14,9 @@ TagManager:
   - Smoke
   - MoveisEletrodomesticos
   - Enemy
+  - PlayerHit
+  - Wall
+  - DevConsole
   layers:
   - Default
   - TransparentFX
@@ -29,9 +32,9 @@ TagManager:
   - Munition
   - Smoke
   - ItensColetaveis
-  - 
-  - 
-  - 
+  - Enemy
+  - PlayerHit
+  - PostProcess
   - 
   - 
   - 

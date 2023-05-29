@@ -1,118 +1,214 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
 public class Inimigo : MonoBehaviour
 {
-    public float velocidade;
+    [Space(10)]
+    [Header("Configurações de Visão")]
+    [Range(1, 100)]
     public float distanciaDeVisao;
+    [Range(1, 100)]
+    public float distanciaMaxima;
+    private float distanciaDeVisaoOriginal;
+
+    [Space(20)]
+    [Header("Configurações de Ataque")]
+    [Range(1, 100)]
     public float distanciaDeAtaque;
-    public Transform posicaoInicial;
-    [Range(1, 30)] public int dano;
+    [Range(1f, 100f)]
+    public int dano;
+    public LayerMask layersDano;
+    [Range(0f, 10f)]
+    public float intervaloDeAtaque;
+
+    [Space(20)]
+    [Header("Configurações de Vida")]
+    [Range(10, 500)]
+    public int vidaMaxima;
+    public int vidaAtual;
+
+    [Space(20)]
+    [Header("Configurações do Knockback")]
+    [Range(0, 50)]
+    [SerializeField] private float knockbackDistance;
+
+    [Space(20)]
+    [Header("Configurações de Raycast")]
+    public LayerMask layerParede;
 
     private Transform jogador;
     private Animator anim;
     private AIPath aiPath;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+
+    private bool morto = false;
+    private bool spawnado = false;
     private bool atacando = false;
-    private bool voltandoParaPosicaoInicial = false;
-
-    private enum EstadoInimigo
-    {
-        Idle,
-        Seguindo,
-        Atacando,
-        Voltando
-    }
-
-    private EstadoInimigo estadoAtual;
 
     private void Start()
     {
         jogador = GameObject.FindGameObjectWithTag("Player").transform;
         anim = GetComponent<Animator>();
         aiPath = GetComponent<AIPath>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
 
-        estadoAtual = EstadoInimigo.Idle;
+        vidaAtual = vidaMaxima;
+        distanciaDeVisaoOriginal = distanciaDeVisao;
+        anim.SetBool("HiddenSpawn", true);
+
+        StartCoroutine(VerificarVisao());
+    }
+
+    private IEnumerator VerificarVisao()
+    {
+        while (true)
+        {
+            if (!morto)
+            {
+                float distancia = Vector2.Distance(transform.position, jogador.position);
+
+                if (distanciaDeVisao > distanciaDeVisaoOriginal)
+                {
+                    distanciaDeVisao -= Time.deltaTime * 10f;
+                    if (distanciaDeVisao < distanciaDeVisaoOriginal)
+                        distanciaDeVisao = distanciaDeVisaoOriginal;
+                }
+                else if (distanciaDeVisao < distanciaMaxima)
+                {
+                    distanciaDeVisao += Time.deltaTime * 10f;
+                    if (distanciaDeVisao > distanciaMaxima)
+                        distanciaDeVisao = distanciaMaxima;
+                }
+
+                if (distancia <= distanciaDeVisao)
+                {
+                    if (!spawnado)
+                    {
+                        anim.SetBool("HiddenSpawn", false);
+                        yield return new WaitForSeconds(1.5f);
+                        if (distancia <= distanciaDeVisao)
+                        {
+                            RaycastHit2D hit = Physics2D.Raycast(transform.position, jogador.position - transform.position, distanciaDeVisao, layerParede);
+                            if (hit.collider != null && hit.collider.CompareTag("Wall"))
+                            {
+                                PararMovimento();
+                                Debug.Log("Colisão com parede: " + hit.collider.gameObject.name);
+                                yield break;
+                            }
+                            else
+                            {
+                                SeguirJogador();
+                            }
+                        }
+
+                        Spawn();
+                        spawnado = true;
+                        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+                        SeguirJogador();
+                    }
+                    else
+                    {
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, jogador.position - transform.position, distanciaDeVisao, layerParede);
+                        if (hit.collider != null && hit.collider.CompareTag("Wall"))
+                        { 
+                            PararMovimento();
+                            Debug.Log("Colisão com parede: " + hit.collider.gameObject.name);
+                        }
+                        else
+                        { 
+                            distanciaDeVisao = distancia;
+                            SeguirJogador();
+                        }
+                    }
+                }
+                else
+                {
+                    PararMovimento();
+                }
+                AtacarJogador(distancia);
+            }
+
+            yield return null;
+        }
     }
 
     private void Update()
     {
-        float distancia = Vector2.Distance(transform.position, jogador.position);
-
-        switch (estadoAtual)
+        if (!morto && !aiPath.isStopped)
         {
-            case EstadoInimigo.Idle:
-                if (distancia < distanciaDeVisao)
-                {
-                    estadoAtual = EstadoInimigo.Seguindo;
-                }
-                break;
+            bool movendoAnteriormente = anim.GetBool("Movendo");
+            bool movendoAtualmente = (aiPath.velocity.sqrMagnitude > 0f);
 
-            case EstadoInimigo.Seguindo:
-                if (distancia > distanciaDeAtaque)
-                {
-                    SeguirJogador();
-                }
-                else
-                {
-                    estadoAtual = EstadoInimigo.Atacando;
-                }
-                break;
+            if (movendoAtualmente != movendoAnteriormente)
+            {
+                anim.SetBool("Movendo", movendoAtualmente);
+                anim.SetBool("Parado", !movendoAtualmente);
+            }
+        }
 
-            case EstadoInimigo.Atacando:
-                if (distancia > distanciaDeAtaque)
-                {
-                    estadoAtual = EstadoInimigo.Seguindo;
-                }
-                else if (!atacando)
-                {
-                    StartCoroutine(ExecutarAtaque());
-                }
-                break;
-
-            case EstadoInimigo.Voltando:
-                VoltarPosicaoInicial();
-                break;
+        if (vidaAtual <= 0 && !morto)
+        {
+            vidaAtual = 0;
+            Morrer();
         }
     }
 
     private void SeguirJogador()
     {
-        anim.SetInteger("transition", 2); // Walking
+        OlharParaJogador();
         aiPath.enabled = true;
+        aiPath.isStopped = false;
+        
     }
 
-    private void VoltarPosicaoInicial()
+    private void PararMovimento()
     {
-        anim.SetInteger("transition", 1); // Idle
-        aiPath.enabled = true;
-
-        if (Vector2.Distance(transform.position, posicaoInicial.position) <= 0.1f)
+        if (anim.GetBool("HiddenSpawn"))
         {
-            voltandoParaPosicaoInicial = false;
             aiPath.enabled = false;
-            estadoAtual = EstadoInimigo.Idle;
+            aiPath.isStopped = true;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+        else
         {
-            estadoAtual = EstadoInimigo.Seguindo;
+            anim.SetBool("Parado", true);
+            aiPath.enabled = false;
+           
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OlharParaJogador()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        Vector2 direcao = jogador.position - transform.position;
+        spriteRenderer.flipX = (direcao.x < 0);
+    }
+
+    private void AtacarJogador(float distancia)
+    {
+        if (distancia <= distanciaDeAtaque && !atacando)
         {
-            estadoAtual = EstadoInimigo.Voltando;
+            PararMovimento();
+            aiPath.isStopped = true;
+            StartCoroutine(ExecutarAtaque());
+        }
+        else
+        {
+            aiPath.isStopped = false;
+            anim.ResetTrigger("Atacando");
         }
     }
 
-    private void CausarDano()
+    private IEnumerator ExecutarAtaque()
+    {
+        atacando = true;
+        anim.SetTrigger("Atacando");
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + intervaloDeAtaque);
+        atacando = false;
+    }
+
+    public void CausarDanoAoPlayer()
     {
         float distancia = Vector2.Distance(transform.position, jogador.position);
         if (distancia <= distanciaDeAtaque)
@@ -121,23 +217,45 @@ public class Inimigo : MonoBehaviour
         }
     }
 
-    private IEnumerator ExecutarAtaque()
+    public void TomarDano()
     {
-        atacando = true;
-        anim.SetInteger("transition", 1); // Idle
-
-        yield return new WaitForSeconds(1f); // Tempo de espera antes do ataque, ajuste conforme necessário
-
-        anim.SetBool("Atacando", true);
-        yield return new WaitForSeconds(0.5f); // Duração do ataque, ajuste conforme necessário
-        CausarDano(); // Chama o método para causar dano
-
-        yield return new WaitForSeconds(1f); // Tempo de espera após o ataque, ajuste conforme necessário
-
-        anim.SetBool("Atacando", false);
+        anim.SetTrigger("TomandoDano");
+        PararMovimento();
         atacando = false;
-        estadoAtual = EstadoInimigo.Seguindo;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "bullet")
+        {
+            Vector2 difference = (transform.position - other.transform.position).normalized;
+            Vector2 knockback = new Vector2(difference.x * knockbackDistance, difference.y * knockbackDistance);
+            transform.position = new Vector2(transform.position.x + knockback.x, transform.position.y + knockback.y);
+        }
+    }
+
+    private void Morrer()
+    {
+        morto = true;
+        anim.SetTrigger("Morrer");
+        aiPath.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        rb.bodyType = RigidbodyType2D.Static;
+        Destroy(gameObject, 2f);
+    }
+
+    public void Spawn()
+    {
+        vidaAtual = vidaMaxima;
+        morto = false;
+        anim.SetTrigger("Spawn");
+        aiPath.enabled = false;
+        GetComponent<Collider2D>().enabled = true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position, jogador.position - transform.position);
     }
 }
-
-

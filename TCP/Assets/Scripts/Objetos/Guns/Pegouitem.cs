@@ -10,7 +10,7 @@ public class Pegouitem : MonoBehaviour
     [SerializeField] private Gun gun;
     public LayerMask layerJogador;
 
-    [SerializeField] float distanciaMaxima = 2f;
+    [SerializeField] float distanciaMaxima;
 
     private void Update()
     {

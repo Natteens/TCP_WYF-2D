@@ -7,6 +7,7 @@ public class GunPackage : MonoBehaviour
     [SerializeField] private Gun gun;
    
     [SerializeField] private TipoArma tipoArma;
+    [SerializeField] private float DistanciaPegar;
     [SerializeField] private int municaoNoPacote;
     [SerializeField] private int municaoRestante;
     [SerializeField] private Sprite pistolaSprite;
@@ -63,7 +64,7 @@ public class GunPackage : MonoBehaviour
     switch (tipoArma)
     {
         case TipoArma.Pistola:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < 1f && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, transform.position) < DistanciaPegar && gun.pistolaBalasGuardadas < gun.pistolaMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.pistolaMaxBalasGuardadas - gun.pistolaBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -83,7 +84,7 @@ public class GunPackage : MonoBehaviour
             break;
 
         case TipoArma.Rifle:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < DistanciaPegar && gun.rifleBalasGuardadas < gun.rifleMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.rifleMaxBalasGuardadas - gun.rifleBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;
@@ -103,7 +104,7 @@ public class GunPackage : MonoBehaviour
             break;
 
         case TipoArma.Shotgun:
-            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < 1f && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
+            if (Input.GetKeyDown(KeyCode.E) && Vector2.Distance(transform.position, gun.transform.position) < DistanciaPegar && gun.shotgunBalasGuardadas < gun.shotgunMaxBalasGuardadas)
             {
                 var balasQueCabemNoPente = gun.shotgunMaxBalasGuardadas - gun.shotgunBalasGuardadas;
                 var balasQueRestamNoPacote = municaoRestante;

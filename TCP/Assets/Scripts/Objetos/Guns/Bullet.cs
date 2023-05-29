@@ -5,15 +5,14 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed;
-  //  public Animator anim;
     public float destroyedDelay = 0.5f;
     public LayerMask layersToIgnore;
-    [SerializeField] ParticleSystem effect; 
+    public ParticleSystem effect;
+    public float knockbackForce = 5f; // Força do knockback
 
     private void Update()
     {
         transform.Translate(Vector2.up * speed * Time.deltaTime);
-       // anim.SetInteger("transition", 1);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,12 +24,17 @@ public class Bullet : MonoBehaviour
 
         if (collision.CompareTag("Player") || collision.CompareTag("Weapon"))
         {
-            // Não faz nada se colidir com o player
+            // Não faz nada se colidir com o player ou a arma
             return;
         }
 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) // Verifica se a colisão ocorreu com um objeto que tem a camada "Inimigo"
+        {
+            Inimigo inimigo = collision.GetComponent<Inimigo>();         
+            inimigo.vidaAtual -= 10;
+        }
+
         Instantiate(effect, transform.position, transform.rotation);
-      //  anim.SetTrigger("OnHit");
         Destroy(gameObject, destroyedDelay);
     }
 }

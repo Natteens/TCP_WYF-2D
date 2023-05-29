@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8500961661270812391}
   - component: {fileID: 8500961661270812390}
   - component: {fileID: 8500961661270812389}
+  - component: {fileID: -8027524956325786552}
   m_Layer: 13
   m_Name: Refrigerante
   m_TagString: ItensColetaveis
@@ -104,7 +105,7 @@ MonoBehaviour:
   layerJogador:
     serializedVersion: 2
     m_Bits: 64
-  distanciaMaxima: 0.5
+  distanciaMaxima: 0.7
 --- !u!58 &8500961661270812389
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -121,3 +122,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &-8027524956325786552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500961661270812387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce388ee3318b424ba011677d13d343d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raioBrilho: 10
+  outlineMaterial: {fileID: 2100000, guid: 82ea68a891e7c26409bab7973a21460d, type: 2}
+  noOutlineMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}

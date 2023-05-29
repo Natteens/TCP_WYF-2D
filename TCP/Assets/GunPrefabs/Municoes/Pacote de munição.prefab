@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6233572902280315448}
   - component: {fileID: 6233572902280315451}
   - component: {fileID: 667015221129815635}
+  - component: {fileID: 1423273413250193838}
   m_Layer: 11
   m_Name: "Pacote de muni\xE7\xE3o"
   m_TagString: ItensColetaveis
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1905159863
-  m_SortingLayer: 3
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -4542323460344573999, guid: 15ce5d112be025040a67dbd5d5b7fb70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -117,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 0}
   tipoArma: 0
+  DistanciaPegar: 0.5
   municaoNoPacote: 0
   municaoRestante: 0
   pistolaSprite: {fileID: -8673251989367308770, guid: 15ce5d112be025040a67dbd5d5b7fb70, type: 3}
@@ -135,3 +137,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: {fileID: 11400000, guid: 606075fb653f66844842802517bfaab2, type: 2}
+--- !u!114 &1423273413250193838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233572902280315455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce388ee3318b424ba011677d13d343d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raioBrilho: 10
+  outlineMaterial: {fileID: 2100000, guid: 82ea68a891e7c26409bab7973a21460d, type: 2}
+  noOutlineMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}

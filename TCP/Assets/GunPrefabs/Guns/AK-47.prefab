@@ -121,4 +121,4 @@ MonoBehaviour:
   layerJogador:
     serializedVersion: 2
     m_Bits: 64
-  distanciaMaxima: 2
+  distanciaMaxima: 0.7

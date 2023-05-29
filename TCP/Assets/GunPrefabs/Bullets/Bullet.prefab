@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1139398453
-  m_SortingLayer: 9
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 874343242196921964, guid: 3ac1df7f347efcc4aba8086dc2a64015, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -150,5 +150,6 @@ MonoBehaviour:
   destroyedDelay: 0
   layersToIgnore:
     serializedVersion: 2
-    m_Bits: 16192
+    m_Bits: 49015
   effect: {fileID: 5997526721847261704, guid: 81e6647448ca9eb42b23b218c56e8eea, type: 3}
+  knockbackForce: 5

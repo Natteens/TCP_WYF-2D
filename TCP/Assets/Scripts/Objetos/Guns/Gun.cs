@@ -23,7 +23,7 @@ public class Gun : MonoBehaviour
     Vector2 dirArma;
     
     [Space(20)]
-     [Header("Posição da Mira")]
+    [Header("Posição da Mira")]
     [SerializeField] Transform pontoDeFogo;
     [SerializeField] private Vector3 posicaoPontoDeFogoPistola = new Vector3(0f, 0f, 0f);
     [SerializeField] private Vector3 posicaoPontoDeFogoRifle = new Vector3(1.2f, 0.07f, 0f);
@@ -50,7 +50,6 @@ public class Gun : MonoBehaviour
   
     [SerializeField] private RuntimeAnimatorController rifle, shotgun, pistola;
     
-
     #region Balas
 
     [Space(20)]
@@ -114,7 +113,6 @@ public class Gun : MonoBehaviour
     #endregion
 
     #endregion
-
 
     #region Get/Set
 
@@ -183,6 +181,7 @@ public class Gun : MonoBehaviour
         set { _pistolaDesbloqueado = value; }
     }
     #endregion
+
     void Awake()
     {
         srGun = GetComponent<SpriteRenderer>();
@@ -430,8 +429,7 @@ public class Gun : MonoBehaviour
     }
 
     void inputArma()
-    {   
-
+    {
         tempoDecorrido += Time.fixedDeltaTime;
 
         if (tempoDecorrido > tempoMaximo)
@@ -439,142 +437,131 @@ public class Gun : MonoBehaviour
             tempoDecorrido = tempoMaximo;
         }
 
-       #region TROCAR DE ARMA COM SCROL DO MOUSE
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        if (scroll > 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
         {
-            armaAtual--;
-            if (armaAtual < 0) armaAtual = armasDesbloqueadas.Count - 1;
+            armaAtual++;
+            if (armaAtual >= armasDesbloqueadas.Count)
+                armaAtual = numArmasDesbloqueadas;
+
+            while (!ArmaDesbloqueada(armaAtual))
+            {
+                armaAtual++;
+                if (armaAtual >= armasDesbloqueadas.Count)
+                    armaAtual = numArmasDesbloqueadas;
+            }
+
             tempoDecorrido = 0f;
             podeAtirar = true;
             PermitirTrocaDeArma();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        else if (scroll < 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
         {
-            armaAtual++;
-            if (armaAtual > armasDesbloqueadas.Count - 1) armaAtual = 0;
+            armaAtual--;
+            if (armaAtual < 0)
+                armaAtual = 0;
+
+            while (!ArmaDesbloqueada(armaAtual))
+            {
+                armaAtual--;
+                if (armaAtual < 0)
+                    armaAtual = 0;
+            }
+
             tempoDecorrido = 0f;
             podeAtirar = true;
-           PermitirTrocaDeArma();
+            PermitirTrocaDeArma();
         }
 
-        TipoArma armaSelecionada = armasDesbloqueadas[armaAtual];
-    
+
+        TipoArma armaSelecionada = ArmaAtualDesbloqueada();
 
 
-       #endregion
-
-        #region TROCAR DE ARMA COM NUMEROS
-
-        if (podeTrocarArma)
+        switch (armaSelecionada)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha4) && nadaDesbloqueado && tempoDecorrido > tempoDeTroca)
-            {
-                armaAtual = 0;
-                tempoDecorrido = 0f;
-                podeAtirar = true;
+            case TipoArma.Nenhum:
+                anim.runtimeAnimatorController = null;
+                tipoArma = TipoArma.Nenhum;
+                playerAnim.equipado = false;
+                srGun.sprite = null;
+                pontoDeFogo.localPosition = Vector3.zero;
                 PermitirTrocaDeArma();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha1) && pistolaDesbloqueado && tempoDecorrido > tempoDeTroca)
-            {
-                armaAtual = 1;
-                tempoDecorrido = 0f;
-                podeAtirar = true;
-                PermitirTrocaDeArma();
+                break;
 
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && shotgunDesbloqueado && tempoDecorrido > tempoDeTroca)
-            {
-                armaAtual = 2;
-                tempoDecorrido = 0f;
-                podeAtirar = true;
-                PermitirTrocaDeArma();
+            case TipoArma.Pistola:
+                anim.runtimeAnimatorController = pistola;
+                tipoArma = TipoArma.Pistola;
+                playerAnim.equipado = true;
+                recarregando = false;
+                anim.SetInteger("transition", 2);
+                srGun.sortingLayerName = "Player ARM";
+                pontoDeFogo.localPosition = posicaoPontoDeFogoPistola;
+                break;
 
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3) && rifleDesbloqueado && tempoDecorrido > tempoDeTroca)
-            {
-                armaAtual = 3;
-                tempoDecorrido = 0f;
-                podeAtirar = true;
-                PermitirTrocaDeArma();
+            case TipoArma.Shotgun:
+                anim.runtimeAnimatorController = shotgun;
+                tipoArma = TipoArma.Shotgun;
+                playerAnim.equipado = true;
+                recarregando = false;
+                anim.SetInteger("transition", 2);
+                srGun.sortingLayerName = "Player ARM";
+                pontoDeFogo.localPosition = posicaoPontoDeFogoShotgun;
+                break;
 
-            }
-        }
-
-       
-        
-        #endregion
-        switch (armaAtual)
-        {
-              case 0: // Nenhuma arma equipada
-                  if (nadaDesbloqueado)
-                  {
-                      anim.runtimeAnimatorController = null;
-                      tipoArma = TipoArma.Nenhum;
-                      playerAnim.equipado = false;
-                      srGun.sprite = null;
-                      pontoDeFogo.localPosition = Vector3.zero;
-                      PermitirTrocaDeArma();
-                }
-
-                  break;
-
-
-              case 1: // Pistola
-
-                  if (pistolaDesbloqueado && armaAtual == 1)
-                  {
-                      anim.runtimeAnimatorController = pistola;
-                      tipoArma = TipoArma.Pistola;
-                      playerAnim.equipado = true;
-                      recarregando = false;
-                      anim.SetInteger("transition", 2);
-                      srGun.sortingLayerName = "Player ARM";
-                      pontoDeFogo.localPosition = posicaoPontoDeFogoPistola;
-                  }
-
-                  break;
-
-              case 2: // Shotgun
-
-                  if (shotgunDesbloqueado && armaAtual == 2)
-                  {
-                      anim.runtimeAnimatorController = shotgun;
-                      tipoArma = TipoArma.Shotgun;
-                      playerAnim.equipado = true;
-                      recarregando = false;
-                      anim.SetInteger("transition", 2);
-                      srGun.sortingLayerName = "Player ARM";
-                      pontoDeFogo.localPosition = posicaoPontoDeFogoShotgun;
-                  }
-
-                  break;
-
-
-              case 3: // Rifle
-
-                  if (rifleDesbloqueado && armaAtual == 3)
-                  {
-                      anim.runtimeAnimatorController = rifle;
-                      tipoArma = TipoArma.Rifle;
-                      playerAnim.equipado = true;
-                      recarregando = false;
-                      anim.SetInteger("transition", 2);
-                      srGun.sortingLayerName = "Player ARM";
-                      pontoDeFogo.localPosition = posicaoPontoDeFogoRifle;
-                  }
-
-                  break;
-
-                  default: // Nenhuma arma equipada         
-                  armaAtual = 0;
-                  recarregando = false;
-                  PermitirTrocaDeArma();
+            case TipoArma.Rifle:
+                anim.runtimeAnimatorController = rifle;
+                tipoArma = TipoArma.Rifle;
+                playerAnim.equipado = true;
+                recarregando = false;
+                anim.SetInteger("transition", 2);
+                srGun.sortingLayerName = "Player ARM";
+                pontoDeFogo.localPosition = posicaoPontoDeFogoRifle;
                 break;
         }
-       
-    }   
-  
+    }
+
+    bool ArmaDesbloqueada(int indice)
+    {
+        switch (indice)
+        {
+            case 0:
+                return _nadaDesbloqueado;
+            case 1:
+                return _pistolaDesbloqueado;
+            case 2:
+                return _shotgunDesbloqueado;
+            case 3:
+                return _rifleDesbloqueado;
+            default:
+                return false;
+        }
+    }
+
+    TipoArma ArmaAtualDesbloqueada()
+    {
+        if (armaAtual == 0 && _nadaDesbloqueado)
+        {
+            return TipoArma.Nenhum;
+        }
+        else if (armaAtual == 1 && _pistolaDesbloqueado)
+        {
+            return TipoArma.Pistola;
+        }
+        else if (armaAtual == 2 && _shotgunDesbloqueado)
+        {
+            return TipoArma.Shotgun;
+        }
+        else if (armaAtual == 3 && _rifleDesbloqueado)
+        {
+            return TipoArma.Rifle;
+        }
+        else
+        {
+            return TipoArma.Nenhum; // Nenhuma arma equipada
+        }
+    }
+
     void CDTiro()
     { 
        podeAtirar = true;
@@ -606,6 +593,7 @@ public class Gun : MonoBehaviour
             armasDesbloqueadas.Remove(tipo);
         }
     }
+
 }
 
 

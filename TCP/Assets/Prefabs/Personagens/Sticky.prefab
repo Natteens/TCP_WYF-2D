@@ -169,7 +169,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   intervaloDeAtaque: 2
-  vidaMaxima: 150
+  vidaMaxima: 35
   vidaAtual: 0
   knockbackDistance: 0.2
   layerParede:

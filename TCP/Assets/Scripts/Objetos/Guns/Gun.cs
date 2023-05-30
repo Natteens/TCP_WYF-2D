@@ -18,9 +18,13 @@ public class Gun : MonoBehaviour
     [SerializeField] private TipoArma _tipoArma;
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer _srGun;
-    [SerializeField] GameObject tiro;   
-    Vector2 mousePosi;
-    Vector2 dirArma;
+
+    [Space(20)]
+    [Header("Bullets")]
+    [SerializeField] GameObject PistolaTiro;
+    [SerializeField] GameObject ShotgunTiro;
+    [SerializeField] GameObject RifleTiro;
+  
     
     [Space(20)]
     [Header("Posição da Mira")]
@@ -49,7 +53,9 @@ public class Gun : MonoBehaviour
     [SerializeField] private bool _pistolaDesbloqueado = false; // indica se a pistola está desbloqueada
   
     [SerializeField] private RuntimeAnimatorController rifle, shotgun, pistola;
-    
+
+    Vector2 mousePosi;
+    Vector2 dirArma;
     #region Balas
 
     [Space(20)]
@@ -263,80 +269,85 @@ public class Gun : MonoBehaviour
     void Atirar()
     {
         mousePosi = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+         
+     switch (tipoArma)
+     {
+         case TipoArma.Pistola: // Pistola
+          if (Input.GetMouseButtonUp(0) && podeAtirar )
+         {
+             if (tipoArma == TipoArma.Pistola && pistolaBalasNoPente > 0)
+             {
+                 anim.SetTrigger("OnFire");
 
-        if (Input.GetMouseButton(0) && podeAtirar )
-        {
-          // if(armaAtual > 0)
-            switch (tipoArma)
-            {
-                case TipoArma.Pistola:
-                    if (tipoArma == TipoArma.Pistola && pistolaBalasNoPente > 0)
-                    {
-                        anim.SetTrigger("OnFire");
+                 for (int i = 0; i < pistolaNumBullets; i++)
+                 {
+                     float angle = (i - (pistolaNumBullets - 1) / 2f) * pistolaAngleBetweenBullets; // ângulo entre cada bala
+                     angle += Random.Range(-pistolaBulletSpread, pistolaBulletSpread); // pequeno desvio aleatório
 
-                        for (int i = 0; i < pistolaNumBullets; i++)
-                        {
-                            float angle = (i - (pistolaNumBullets - 1) / 2f) * pistolaAngleBetweenBullets; // ângulo entre cada bala
-                            angle += Random.Range(-pistolaBulletSpread, pistolaBulletSpread); // pequeno desvio aleatório
+                     GameObject bulletObj = Instantiate(PistolaTiro, pontoDeFogo.position, pontoDeFogo.rotation);
+                     bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
 
-                            GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
-                            bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
-                            
-                        }
+                 }
 
-                        pistolaBalasNoPente--;
-                        podeAtirar = false;
-                        NaoTrocarDeArma();
+                 pistolaBalasNoPente--;
+                 podeAtirar = false;
+                 NaoTrocarDeArma();
 
-                    }
-                    break;
+             }
+         }     
+             break;
 
-                case TipoArma.Rifle:
-                    if (tipoArma == TipoArma.Rifle && rifleBalasNoPente > 0)
-                    {
-                        anim.SetTrigger("OnFire");
+         case TipoArma.Rifle: // Rifle
+         if (Input.GetMouseButton(0) && podeAtirar)
+         {
+             if (tipoArma == TipoArma.Rifle && rifleBalasNoPente > 0)
+             {
+                 anim.SetTrigger("OnFire");
 
-                        for (int i = 0; i < rifleNumBullets; i++)
-                        {
-                            float angle = (i - (rifleNumBullets - 1) / 2f) * rifleAngleBetweenBullets; // ângulo entre cada bala
-                            angle += Random.Range(-rifleBulletSpread, rifleBulletSpread); // pequeno desvio aleatório
+                 for (int i = 0; i < rifleNumBullets; i++)
+                 {
+                     float angle = (i - (rifleNumBullets - 1) / 2f) * rifleAngleBetweenBullets; // ângulo entre cada bala
+                     angle += Random.Range(-rifleBulletSpread, rifleBulletSpread); // pequeno desvio aleatório
 
-                            GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
-                            bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
-                            
-                        }
+                     GameObject bulletObj = Instantiate(RifleTiro, pontoDeFogo.position, pontoDeFogo.rotation);
+                     bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
 
-                        rifleBalasNoPente--;
-                        podeAtirar = false;
-                        NaoTrocarDeArma();
-                    }
-                    break;
+                 }
 
-                case TipoArma.Shotgun:
-                    if (tipoArma == TipoArma.Shotgun && shotgunBalasNoPente > 0)
-                    {
-                        anim.SetTrigger("OnFire");
+                 rifleBalasNoPente--;
+                 podeAtirar = false;
+                 NaoTrocarDeArma();
+             }
+         }
+            
+             break;
 
-                        for (int i = 0; i < shotgunNumBullets; i++)
-                        {
-                            float angle = (i - (shotgunNumBullets - 1) / 2f) * shotgunAngleBetweenBullets; // ângulo entre cada bala
-                            angle += Random.Range(-rifleBulletSpread, shotgunBulletSpread); //  desvio aleatório
+         case TipoArma.Shotgun: //Shotgun
+         if (Input.GetMouseButtonUp(0) && podeAtirar)
+         {
+             if (tipoArma == TipoArma.Shotgun && shotgunBalasNoPente > 0)
+             {
+                 anim.SetTrigger("OnFire");
 
-                            GameObject bulletObj = Instantiate(tiro, pontoDeFogo.position, pontoDeFogo.rotation);
-                            bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
-                            
-                        }
+                 for (int i = 0; i < shotgunNumBullets; i++)
+                 {
+                     float angle = (i - (shotgunNumBullets - 1) / 2f) * shotgunAngleBetweenBullets; // ângulo entre cada bala
+                     angle += Random.Range(-rifleBulletSpread, shotgunBulletSpread); //  desvio aleatório
 
-                        shotgunBalasNoPente--;
-                        podeAtirar = false;
-                        NaoTrocarDeArma();
-                    }
-                    break;
-            }
+                     GameObject bulletObj = Instantiate(ShotgunTiro, pontoDeFogo.position, pontoDeFogo.rotation);
+                     bulletObj.transform.rotation = Quaternion.Euler(0, 0, pontoDeFogo.rotation.eulerAngles.z + angle - 90f);
 
-          //  podeAtirar = false;
-        }
-       
+                 }
+
+                 shotgunBalasNoPente--;
+                 podeAtirar = false;
+                 NaoTrocarDeArma();
+             }
+         }
+             
+             break;
+     }
+
     }
 
     void ReloadArma()

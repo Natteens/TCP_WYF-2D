@@ -2,30 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class PistolaBullet : MonoBehaviour
 {
     public float speed;
     public float destroyedDelay = 0.5f;
     public LayerMask layersToIgnore;
     public ParticleSystem effect;
-    public float knockbackForce = 5f; // Força do knockback
-    [SerializeField] private TipoArma tipoArma;
 
     [Space(20)]
     [Header("Configurações de Dano")]
 
-    [Range(1,100)]
-    [SerializeField] private int PistolaDamage;
     [Range(1, 100)]
-    [SerializeField] private int ShotgunDamage;
-    [Range(1, 100)]
-    [SerializeField] private int RifleDamage;
+    [SerializeField] private int Dano;
+    [SerializeField] private int DanoReduzido;
+    [SerializeField]private float DistanciaPercorrida;
+    [SerializeField] private float DistanciaMax;
 
-
-    
     private void Update()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        float distance = speed * Time.deltaTime;
+        transform.Translate(Vector2.up * distance);
+        DistanciaPercorrida += distance;
+
+        if (DistanciaPercorrida >= DistanciaMax)
+        {
+          if(Dano > DanoReduzido)
+            {
+                Dano -= DanoReduzido;
+            }          
+            DistanciaPercorrida -= DistanciaMax;           
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -44,26 +50,12 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) // Verifica se a colisão ocorreu com um objeto que tem a camada "Inimigo"
         {
             Inimigo inimigo = collision.GetComponent<Inimigo>();
-             
-            switch (tipoArma)
-            {
-                case TipoArma.Pistola:
-                    
-                    inimigo.vidaAtual -= PistolaDamage;
-                    break;
 
-                case TipoArma.Rifle:
-                    inimigo.vidaAtual -= ShotgunDamage;
-                    break;
-
-                case TipoArma.Shotgun:
-                   
-                    inimigo.vidaAtual -= ShotgunDamage;
-                    break;
-            }
+            inimigo.vidaAtual -= Dano;
         }
 
         Instantiate(effect, transform.position, transform.rotation);
         Destroy(gameObject, destroyedDelay);
     }
 }
+

@@ -21,6 +21,7 @@ public class Inimigo : MonoBehaviour
     public LayerMask layersDano;
     [Range(0f, 10f)]
     public float intervaloDeAtaque;
+    public Player player;
 
     [Space(20)]
     [Header("Configurações de Vida")]
@@ -43,12 +44,14 @@ public class Inimigo : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
+
     private bool morto = false;
     private bool spawnado = false;
     private bool atacando = false;
 
     private void Start()
     {
+      // player = GetComponent<Player>();
         jogador = GameObject.FindGameObjectWithTag("Player").transform;
         anim = GetComponent<Animator>();
         aiPath = GetComponent<AIPath>();
@@ -137,6 +140,8 @@ public class Inimigo : MonoBehaviour
 
     private void Update()
     {
+       
+
         if (!morto && !aiPath.isStopped)
         {
             bool movendoAnteriormente = anim.GetBool("Movendo");
@@ -213,7 +218,8 @@ public class Inimigo : MonoBehaviour
         float distancia = Vector2.Distance(transform.position, jogador.position);
         if (distancia <= distanciaDeAtaque)
         {
-            jogador.GetComponent<Controle>().VidaAtual -= dano;
+           jogador.GetComponent<Controle>().VidaAtual -= dano;
+           player.TomouDano();
         }
     }
 
@@ -222,6 +228,7 @@ public class Inimigo : MonoBehaviour
         anim.SetTrigger("TomandoDano");
         PararMovimento();
         atacando = false;
+       
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -237,7 +244,7 @@ public class Inimigo : MonoBehaviour
     private void Morrer()
     {
         morto = true;
-        anim.SetTrigger("Morrer");
+        anim.SetTrigger("Morreu");
         aiPath.enabled = false;
         GetComponent<Collider2D>().enabled = false;
         rb.bodyType = RigidbodyType2D.Static;
@@ -253,9 +260,4 @@ public class Inimigo : MonoBehaviour
         GetComponent<Collider2D>().enabled = true;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, jogador.position - transform.position);
-    }
 }

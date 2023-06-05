@@ -139,6 +139,18 @@ public class PlayerAnim : MonoBehaviour
 
     #endregion
 
+    public void TomandoDano()
+    {
+        if(!equipado)
+        {
+            anim.SetTrigger("TomoDano");
+        }
+        else
+        {
+            anim.SetTrigger("TomoDanoGun");
+        }
+        
+    }
 
 
 

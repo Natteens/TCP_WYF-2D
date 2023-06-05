@@ -45,23 +45,8 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings:
-    - serializedVersion: 2
-      path: 0
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-    pptrCurveMapping:
-    - {fileID: -1629873349854716425, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: 811178005538749272, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: 2465954802655335613, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: -4759400719645970326, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: -6525545897827947706, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: 423964053055586815, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: 6491062460823051978, guid: d08f234094f044749ad1422197c186c1, type: 3}
-    - {fileID: 7033123163119209441, guid: d08f234094f044749ad1422197c186c1, type: 3}
+    genericBindings: []
+    pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -90,14 +75,14 @@ AnimationClip:
   - time: 0.25
     functionName: PlaySFX
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 9b66691ee9dc08d4f805e585f223b4c2, type: 3}
+    objectReferenceParameter: {fileID: 8300000, guid: 57495e54c33367341affbc2e4384a58f, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.5833333
     functionName: PlaySFX
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 9b66691ee9dc08d4f805e585f223b4c2, type: 3}
+    objectReferenceParameter: {fileID: 8300000, guid: 57495e54c33367341affbc2e4384a58f, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

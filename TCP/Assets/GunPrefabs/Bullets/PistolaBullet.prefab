@@ -153,6 +153,6 @@ MonoBehaviour:
     m_Bits: 114551
   effect: {fileID: 5997526721847261704, guid: 81e6647448ca9eb42b23b218c56e8eea, type: 3}
   Dano: 20
-  DanoReduzido: 7
+  DanoReduzido: 6
   DistanciaPercorrida: 0
   DistanciaMax: 10

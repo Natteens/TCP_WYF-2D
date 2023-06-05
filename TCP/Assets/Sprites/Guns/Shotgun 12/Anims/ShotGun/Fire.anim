@@ -67,7 +67,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 1.0833334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -90,11 +90,11 @@ AnimationClip:
   - time: 0.083333336
     functionName: PlaySFX
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 5d3d41871ced0a8488e52ed1f8178f05, type: 3}
+    objectReferenceParameter: {fileID: 8300000, guid: 4edab26c105f2d04b9648a75696ee93a, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.75
+  - time: 1.0833334
     functionName: CDTiro
     data: 
     objectReferenceParameter: {fileID: 0}

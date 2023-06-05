@@ -19,7 +19,8 @@ public class Controle : MonoBehaviour
     public float tempoMaximoSmoke = 120f; // 2 minutos em segundos
     private float tempoDecorridoSmoke = 0f;
     private bool estaNaSmoke = false;
- 
+
+    [SerializeField] private PlayerAnim playerAnim;
 
 
     void Start()
@@ -40,7 +41,8 @@ public class Controle : MonoBehaviour
         SistemaDeEstamina();
         SistemaDeFome();
         SistemaDeSede();
-        AplicarBarras();   
+        AplicarBarras();
+       
     }
     void FixedUpdate()
     {
@@ -146,6 +148,7 @@ public class Controle : MonoBehaviour
         Debug.Log("Morreu por falta de comida");
     }
 
+
     #region DANO DA SMOKE 
     void tomandoDanoSmoke()
     {
@@ -191,5 +194,5 @@ public class Controle : MonoBehaviour
         }
     }
     #endregion
-
+    
 }

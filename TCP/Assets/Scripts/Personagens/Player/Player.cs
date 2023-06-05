@@ -14,8 +14,10 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerAnim playerAnim;
     [SerializeField] private Gun gun;
     [SerializeField] private Controle controle;
+    private bool canMove = true;
+    
 
-     [Range(1, 5)]public int energiaGasta;
+    [Range(1, 5)]public int energiaGasta;
 
     private Rigidbody2D rig;  
     private bool _isRunning;
@@ -67,7 +69,15 @@ public class Player : MonoBehaviour
 
     void OnInput()
     {
-        direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (canMove)
+        {
+            direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+        else
+        {
+            direction = Vector2.zero;
+        }
+        
     }
 
     void OnMove()
@@ -97,13 +107,14 @@ public class Player : MonoBehaviour
 
     void OnRoll()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && canRoll && !isRolling && direction.magnitude > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && canMove && canRoll && !isRolling && direction.magnitude > 0)
         {
             direction.Normalize();
             isRolling = true;
             canRoll = false;
             speed = rollSpeed;
             controle.EstaminaAtual -= 15;
+      
         }
     }
 
@@ -118,7 +129,25 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region 
+    #region controle
+    public void TomouDano()
+    {
+        if (isRolling)
+        {
+            // O jogador está rolando, ignorar a animação de dano
+            return;
+        }
+        // para o movimento do player por 0.5f e dps ele pode voltar a se mover 
+        canMove = false;
+        Invoke("PermitirMovimento", 0.5f);
+        playerAnim.TomandoDano();
+    }
+
+    private void PermitirMovimento()
+    {
+        canMove = true;
+    }
+
     #endregion
 
 }

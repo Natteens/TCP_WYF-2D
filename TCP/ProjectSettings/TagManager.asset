@@ -17,6 +17,8 @@ TagManager:
   - PlayerHit
   - Wall
   - DevConsole
+  - ChaoBlood
+  - ChaoPadrao
   layers:
   - Default
   - TransparentFX
@@ -95,6 +97,9 @@ TagManager:
     locked: 0
   - name: Enviroments2
     uniqueID: 125758165
+    locked: 0
+  - name: Menu
+    uniqueID: 808363571
     locked: 0
   - name: 'MOUSE AIM '
     uniqueID: 3511895867

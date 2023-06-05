@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Coletaveis : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Coletaveis : MonoBehaviour
         Vida,
         Energia
     }
+
+    
     public TIPO TipoDoItem;
     [Range(1, 500)]
     public float QuantoRepor = 50;
@@ -18,9 +21,20 @@ public class Coletaveis : MonoBehaviour
     public LayerMask layerJogador;
     [SerializeField] float distanciaMaxima = 2f;
 
+    [Space(20)]
+    [Header("Sounds")]
+
+    [SerializeField] private AudioSource audioSource;
+    public AudioClip somComida;
+    public AudioClip somBebida;
+    public AudioClip somVida;
+    public AudioClip somEnergia;
+
+
     private void Start()
     {
         Player = GameObject.FindWithTag("Player");
+       
     }
     void Update()
     {
@@ -44,25 +58,32 @@ public class Coletaveis : MonoBehaviour
                     {
                         case TIPO.Comida:
                             Player.GetComponent<Controle>().FomeAtual += QuantoRepor;
+                            audioSource.PlayOneShot(somComida);
                             Destroy(gameObject);
                             break;
                         case TIPO.Bebida:
                             Player.GetComponent<Controle>().SedeAtual += QuantoRepor;
+                            audioSource.PlayOneShot(somBebida);
                             Destroy(gameObject);
                             break;
                         case TIPO.Vida:
                             Player.GetComponent<Controle>().VidaAtual += QuantoRepor;
+                            audioSource.PlayOneShot(somVida);
                             Destroy(gameObject);
                             break;
                         case TIPO.Energia:
                             Player.GetComponent<Controle>().EstaminaAtual += QuantoRepor;
+                            audioSource.PlayOneShot(somEnergia);
                             Destroy(gameObject);
                             break;
                     }
+
                 }
             }
             
         }
            
     }
+
+   
 }

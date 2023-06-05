@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PistolaBullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public float speed;
     public float destroyedDelay = 0.5f;

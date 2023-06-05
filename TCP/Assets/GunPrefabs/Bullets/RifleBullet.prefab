@@ -152,7 +152,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 114551
   effect: {fileID: 5997526721847261704, guid: 81e6647448ca9eb42b23b218c56e8eea, type: 3}
-  Dano: 16
-  DanoReduzido: 5
+  Dano: 5
+  DanoReduzido: 0
   DistanciaPercorrida: 0
-  DistanciaMax: 8
+  DistanciaMax: 0

@@ -161,8 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128e975147b4a54c9bf55e359f9c7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanciaDeVisao: 15
-  distanciaMaxima: 15
+  distanciaDeVisao: 10
+  distanciaMaxima: 10
   distanciaDeAtaque: 2
   dano: 25
   layersDano:

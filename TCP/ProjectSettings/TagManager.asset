@@ -19,6 +19,7 @@ TagManager:
   - DevConsole
   - ChaoBlood
   - ChaoPadrao
+  - SalaSegura
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - Enemy
   - PlayerHit
   - PostProcess
-  - 
+  - SafeRoom
   - 
   - 
   - 

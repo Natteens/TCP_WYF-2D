@@ -59,7 +59,7 @@ public class Gun : MonoBehaviour
     #region Balas
 
     [Space(20)]
-     [Header("Balas")]
+    [Header("Balas")]
     [SerializeField] private int _balasRecarregadas = 0;    
     [SerializeField] private bool _recarregando = false;      
     public float tempoDeTroca = 2f;

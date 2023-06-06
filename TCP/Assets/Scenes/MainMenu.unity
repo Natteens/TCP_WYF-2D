@@ -635,7 +635,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 137375409}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1838161752}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &137375409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2178,6 +2190,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098200943}
   m_CullTransparentMesh: 1
+--- !u!1 &1199480389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1199480391}
+  - component: {fileID: 1199480390}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1199480390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199480389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f0de3584ae3e9c4a820c130b0a44cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  controle: {fileID: 0}
+  gun: {fileID: 0}
+--- !u!4 &1199480391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199480389}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1520279912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,7 +2902,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1648065672}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1838161753}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: ContinueGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &1648065672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3124,13 +3195,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cena: Laboratorio
   optionsPanel: {fileID: 5233151}
-  music: {fileID: 816914190}
-  sfx: {fileID: 693662244}
+  PausePanel: {fileID: 0}
+  mix: {fileID: 24100000, guid: 0952ee5dda95b68419e56a0c47d89ba6, type: 2}
+  musicSlider: {fileID: 308368561}
+  SFXslider: {fileID: 949527469}
   dificuldade: 0
   legenda: {fileID: 1922237991}
-  facil: 'IZI '
-  normal: Te falta odio?
-  dificil: Aqui fudeu
+  facil: facil
+  normal: normal
+  dificil: dificil
+  confirmPanel: {fileID: 0}
+  saveManager: {fileID: 1199480390}
+  isPaused: 0
 --- !u!4 &1838161754
 Transform:
   m_ObjectHideFlags: 0

@@ -161,14 +161,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128e975147b4a54c9bf55e359f9c7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanciaDeVisao: 10
-  distanciaMaxima: 10
+  distanciaDeVisao: 15
+  distanciaMaxima: 15
   distanciaDeAtaque: 2
   dano: 25
   layersDano:
     serializedVersion: 2
     m_Bits: 64
   intervaloDeAtaque: 2
+  player: {fileID: 0}
   vidaMaxima: 35
   vidaAtual: 0
   knockbackDistance: 0.2

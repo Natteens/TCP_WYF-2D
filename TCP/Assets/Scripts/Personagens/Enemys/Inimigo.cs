@@ -88,20 +88,13 @@ public class Inimigo : MonoBehaviour
 
                 if (distancia <= distanciaDeVisao)
                 {
-                    if (!spawnado)
+                    if (!spawnado) // Não spawnou
                     {
                         anim.SetBool("HiddenSpawn", false);
                         yield return new WaitForSeconds(1.5f);
                         if (distancia <= distanciaDeVisao)
                         {
-                            RaycastHit2D hit = Physics2D.Raycast(transform.position, jogador.position - transform.position, distanciaDeVisao, layerParede);
-                            if (hit.collider != null && hit.collider.CompareTag("Wall"))
-                            {
-                                PararMovimento();
-                                Debug.Log("Colisão com parede: " + hit.collider.gameObject.name);
-                                yield break;
-                            }
-                            else
+                            if (!VerificarColisaoParede())
                             {
                                 SeguirJogador();
                             }
@@ -112,17 +105,10 @@ public class Inimigo : MonoBehaviour
                         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
                         SeguirJogador();
                     }
-                    else
+                    else        // já Spawnou
                     {
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position, jogador.position - transform.position, distanciaDeVisao, layerParede);
-                        if (hit.collider != null && hit.collider.CompareTag("Wall"))
-                        { 
-                            PararMovimento();
-                            Debug.Log("Colisão com parede: " + hit.collider.gameObject.name);
-                        }
-                        else
-                        { 
-                            distanciaDeVisao = distancia;
+                        if (!VerificarColisaoParede())
+                        {
                             SeguirJogador();
                         }
                     }
@@ -137,6 +123,19 @@ public class Inimigo : MonoBehaviour
             yield return null;
         }
     }
+
+    private bool VerificarColisaoParede()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, jogador.position - transform.position, distanciaDeVisao, layerParede);
+        if (hit.collider != null && hit.collider.CompareTag("Wall"))
+        {
+            PararMovimento();
+           // Debug.Log("Colisão com parede: " + hit.collider.gameObject.name);
+            return true;
+        }
+        return false;
+    }
+
 
     private void Update()
     {

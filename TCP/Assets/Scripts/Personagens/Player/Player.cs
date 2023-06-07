@@ -45,8 +45,15 @@ public class Player : MonoBehaviour
         set { _isRolling = value; }
     }
     #endregion
+    private void Awake()
+    {
+        GameSaveManager.instance.player = this;
+    }
     private void Start()
     {
+        GameSaveManager.instance.LoadGame();
+
+
         Time.timeScale = 1f;
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;

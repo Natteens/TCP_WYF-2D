@@ -2,16 +2,41 @@ using UnityEngine;
 
 public class SavePoint : MonoBehaviour
 {
-    public GameSaveManager saveManager;
+
+    private bool isPlayerInside = false;
+
+    private void Start()
+    {
+        
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Jogo salvando...");
         if (other.CompareTag("Player"))
         {
-            // Salva o jogo quando o jogador interage com o save point
-            saveManager.SaveGame();
-            Debug.Log("Jogo salvo!");
+            isPlayerInside = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInside = false;
+        }
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (isPlayerInside)
+            {
+                Debug.Log("Jogo salvando...");
+                GameSaveManager.instance.SaveGame();
+                Debug.Log("Jogo salvo!");
+            }
         }
     }
 }

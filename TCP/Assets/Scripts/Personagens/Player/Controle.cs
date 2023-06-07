@@ -23,14 +23,23 @@ public class Controle : MonoBehaviour
     [SerializeField] private PlayerAnim playerAnim;
 
 
+    private void Awake()
+    {
+        GameSaveManager.instance.controle = this;
+    }
     void Start()
     {
-        player = GetComponent<Player>();
+       
 
-        VidaAtual = VidaCheia;
-        EstaminaAtual = EstaminaCheia;
-        FomeAtual = FomeCheia;
-        SedeAtual = SedeCheia;
+        player = GetComponent<Player>();
+        if (GameSaveManager.instance.SaveExists() == false)
+        {
+
+            VidaAtual = VidaCheia;
+            EstaminaAtual = EstaminaCheia;
+            FomeAtual = FomeCheia;
+            SedeAtual = SedeCheia; 
+        }
        
         velocidadeCaminhando = player.speed;
         velocidadeCorrendo = player.runSpeed;
@@ -160,6 +169,11 @@ public class Controle : MonoBehaviour
                 float danoAtual = tempoDecorridoSmoke <= 60f ? danoSmoke : danoSmokeAumentado;              
                 tomarDano(danoAtual);
                 Debug.Log("Dano atual: " + danoAtual);
+            }
+            else if (tempoDecorridoSmoke >= tempoMaximoSmoke)
+            {
+                tomarDano(danoSmokeAumentado);
+               
             }
             else
             {

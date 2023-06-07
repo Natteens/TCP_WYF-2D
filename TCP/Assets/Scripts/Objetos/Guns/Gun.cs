@@ -190,6 +190,7 @@ public class Gun : MonoBehaviour
 
     void Awake()
     {
+        GameSaveManager.instance.gun = this;
         srGun = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         GameObject playerObject = GameObject.Find("Player");
@@ -198,35 +199,39 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
-
+       
+        
         armasDesbloqueadas.Add(TipoArma.Nenhum);
         armasDesbloqueadas.Add(TipoArma.Pistola);
         armasDesbloqueadas.Add(TipoArma.Rifle);
         armasDesbloqueadas.Add(TipoArma.Shotgun);
+        if (GameSaveManager.instance.SaveExists() == false)
+        {
 
-        pistolaMaxBalasGuardadas = 60;
-        pistolaBalasGuardadas = Random.Range(10, 35);
-        pistolaBalasNoPente = Random.Range(7, 12);
+            pistolaBalasGuardadas = Random.Range(10, 35);
+            pistolaBalasNoPente = Random.Range(7, 12);
+
+            rifleBalasGuardadas = Random.Range(10, 30);
+            rifleBalasNoPente = Random.Range(15, 30);
+
+            shotgunBalasGuardadas = Random.Range(10, 24);
+            shotgunBalasNoPente = Random.Range(7, 12);
+
+        }
+
+        pistolaMaxBalasGuardadas = 60;     
         pistolaTamanhoPente = 12;
         pistolaNumBullets = 1;
         pistolaAngleBetweenBullets = 0f;
         pistolaBulletSpread = 0f;
 
-
-
         rifleMaxBalasGuardadas = 120;
-        rifleBalasGuardadas = Random.Range(10, 30);
-        rifleBalasNoPente = Random.Range(15, 30);
         rifleTamanhoPente = 30;
         rifleNumBullets = 1;
         rifleAngleBetweenBullets = 0f;
         rifleBulletSpread = 0f;
 
-
-
         shotgunMaxBalasGuardadas = 24;
-        shotgunBalasGuardadas = Random.Range(10, 24);
-        shotgunBalasNoPente = Random.Range(7, 12);
         shotgunTamanhoPente = 12;
         shotgunNumBullets = 5;
         shotgunAngleBetweenBullets = 10f;

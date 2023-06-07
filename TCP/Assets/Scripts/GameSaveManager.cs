@@ -32,13 +32,13 @@ public class GameSaveManager : MonoBehaviour
     public Player player;
     public Controle controle;
     public Gun gun;
-    private static GameSaveManager instance;
+    public static GameSaveManager instance { get; private set; } 
 
     private const string saveFilePath = "/savegame.json";
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
@@ -69,7 +69,7 @@ public class GameSaveManager : MonoBehaviour
 
         // Converta o objeto em JSON
         string jsonData = JsonUtility.ToJson(gameSaveData);
-
+        Debug.Log(jsonData);
         // Salve o JSON em um arquivo
         string savePath = Application.persistentDataPath + saveFilePath;
         File.WriteAllText(savePath, jsonData);
@@ -79,7 +79,7 @@ public class GameSaveManager : MonoBehaviour
     {
         // Verifique se o arquivo de salvamento existe
         string savePath = Application.persistentDataPath + saveFilePath;
-        if (File.Exists(savePath))
+        if (SaveExists())
         {
             // Leia o JSON do arquivo
             string jsonData = File.ReadAllText(savePath);
@@ -115,9 +115,10 @@ public class GameSaveManager : MonoBehaviour
     public void DeleteSave()
     {
         // Exclua o arquivo de salvamento, se existir
-        string savePath = Application.persistentDataPath + saveFilePath;
-        if (File.Exists(savePath))
+       
+        if (SaveExists())
         {
+            string savePath = Application.persistentDataPath + saveFilePath;
             File.Delete(savePath);
         }
     }

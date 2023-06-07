@@ -113,8 +113,7 @@ public class Menu : MonoBehaviour
 
     public void ContinueGame()
     {
-        // Carregue o jogo salvo
-        saveManager.LoadGame();
+       
 
         // Continue o jogo a partir do save
         isNewGame = false;

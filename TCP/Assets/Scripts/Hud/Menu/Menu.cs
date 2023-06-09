@@ -17,6 +17,10 @@ public class Menu : MonoBehaviour
     [Header("------------Settings------------")]
     [SerializeField] public GameObject optionsPanel;
     [SerializeField] private GameObject PausePanel;
+    [SerializeField] private GameObject continueGame;
+    [SerializeField] public GameObject LoadProgress;
+    [SerializeField] private Slider BarraLoading;
+
 
     [Space(10)]
     [Header("------------Sons------------")]
@@ -52,7 +56,16 @@ public class Menu : MonoBehaviour
         // Verifique se existe um save
         isSaveExists = saveManager.SaveExists();
 
-        if (PlayerPrefs.HasKey("musicVolume"))
+        if (saveManager.SaveExists())
+        {
+            continueGame.SetActive(true);
+        }
+        else
+        {
+            continueGame.SetActive(false);
+        }
+
+        if (PlayerPrefs.HasKey("musicVolume") && PlayerPrefs.HasKey("sfxVolume"))
         {
             LoadVolume();
         }
@@ -63,6 +76,17 @@ public class Menu : MonoBehaviour
         }
     }
 
+    public IEnumerator CarregarCena()
+    {
+        LoadProgress.SetActive(true);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(cena);
+        while (!asyncOperation.isDone)
+        {
+            this.BarraLoading.value = asyncOperation.progress;
+            Debug.Log("Carregando" + (asyncOperation.progress * 100f) + "%");
+            yield return null;
+        }
+    }
 
     public void Jogar()
     {
@@ -95,8 +119,6 @@ public class Menu : MonoBehaviour
         confirmPanel.SetActive(false);
     }
 
-
-
     public void StartNewGame()
     {
         // Verifique se há um save existente antes de iniciar um novo jogo
@@ -108,22 +130,21 @@ public class Menu : MonoBehaviour
 
         // Inicie um novo jogo
         isNewGame = true;
-        StartGame();
+       StartCoroutine(CarregarCena());
     }
 
     public void ContinueGame()
     {
-       
-
         // Continue o jogo a partir do save
         isNewGame = false;
-        StartGame();
+        StartCoroutine(CarregarCena());
     }
 
-    private void StartGame()
+ /*   private void StartGame()
     {
         SceneManager.LoadScene(cena);
     }
+ */
 
     public void ShowOptions()
     {
@@ -162,16 +183,16 @@ public class Menu : MonoBehaviour
 
     public void MenuPrincipal()
     {
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(CarregarCena());
     }
 
     public void Sair()
     {
         Debug.Log("Saiu");
         //Sai do jogo no edit mode
-        UnityEditor.EditorApplication.isPlaying = false;
+       // UnityEditor.EditorApplication.isPlaying = false;
         // Fecha o jogo Compilado
-        // Application.Quit();  
+        Application.Quit();  
     }
 
     public void PauseScreen()

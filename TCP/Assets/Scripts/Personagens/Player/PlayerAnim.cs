@@ -8,9 +8,14 @@ public class PlayerAnim : MonoBehaviour
     private Animator _anim;
     private Gun gun;
     public bool equipado;
-    
+    public Controle controle;
 
-
+    [Space(10)]
+    [Header("-------------Atacando---------")]
+    [SerializeField] public bool atacando;
+    [SerializeField] private GameObject attackCollider;
+    [Range(1, 500)]
+    [SerializeField] public int Dano;
 
     public Animator anim
     {
@@ -38,7 +43,7 @@ public class PlayerAnim : MonoBehaviour
         OnMove();
         OnRun();
         OnRoll();
-      
+        Atk();
     }
 
     private void FixedUpdate()
@@ -48,6 +53,7 @@ public class PlayerAnim : MonoBehaviour
             gun.podeTrocarArma = true;
         }
     }
+
     #region Movement
 
     void OnMove()
@@ -151,8 +157,25 @@ public class PlayerAnim : MonoBehaviour
         }
         
     }
+    
+    public void Atk()
+    {
+        if (Input.GetMouseButtonUp(0) && !equipado && !atacando && controle.EstaminaAtual >= 20)
+        {
+            atacando = true;
+            anim.SetBool("atk", true);
+            player.canMove = false;
+            player.canRoll = false;
+            player.direction = Vector2.zero;
+            controle.EstaminaAtual -= 20;
+        }
+    }
 
-
-
-
+    public void EndAtk()
+    {
+        atacando = false;
+        player.canMove = true;
+        player.canRoll = true;
+        anim.ResetTrigger("atk");
+    }
 }

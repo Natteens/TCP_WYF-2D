@@ -13,7 +13,7 @@ public class Gun : MonoBehaviour
 {
     
     [Header("Tipo de Arma")]
-
+    [SerializeField] private Player player;
     [SerializeField] private PlayerAnim playerAnim;
     [SerializeField] private TipoArma _tipoArma;
     [SerializeField] private Animator anim;
@@ -44,7 +44,7 @@ public class Gun : MonoBehaviour
     public List<TipoArma> armasDesbloqueadas = new List<TipoArma>();
     public bool podeTrocarArma = true;
     bool AnimRecarga = false;
-    [SerializeField] private int armaAtual = 0; // valor da arma atual
+    [SerializeField] public int armaAtual = 0; // valor da arma atual
     [SerializeField] public bool armaDesbloqueada = false;
     [SerializeField] public int numArmasDesbloqueadas;
     [SerializeField] private bool _nadaDesbloqueado = true;   
@@ -205,6 +205,7 @@ public class Gun : MonoBehaviour
         armasDesbloqueadas.Add(TipoArma.Pistola);
         armasDesbloqueadas.Add(TipoArma.Rifle);
         armasDesbloqueadas.Add(TipoArma.Shotgun);
+
         if (GameSaveManager.instance.SaveExists() == false)
         {
 
@@ -278,7 +279,7 @@ public class Gun : MonoBehaviour
      switch (tipoArma)
      {
          case TipoArma.Pistola: // Pistola
-          if (Input.GetMouseButtonUp(0) && podeAtirar )
+          if (Input.GetMouseButtonUp(0) && podeAtirar && player.isRolling == false)
          {
              if (tipoArma == TipoArma.Pistola && pistolaBalasNoPente > 0)
              {
@@ -303,7 +304,7 @@ public class Gun : MonoBehaviour
              break;
 
          case TipoArma.Rifle: // Rifle
-         if (Input.GetMouseButton(0) && podeAtirar)
+         if (Input.GetMouseButton(0) && podeAtirar && player.isRolling == false)
          {
              if (tipoArma == TipoArma.Rifle && rifleBalasNoPente > 0)
              {
@@ -328,7 +329,7 @@ public class Gun : MonoBehaviour
              break;
 
          case TipoArma.Shotgun: //Shotgun
-         if (Input.GetMouseButtonUp(0) && podeAtirar)
+         if (Input.GetMouseButtonUp(0) && podeAtirar && player.isRolling == false) 
          {
              if (tipoArma == TipoArma.Shotgun && shotgunBalasNoPente > 0)
              {

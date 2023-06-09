@@ -6,22 +6,26 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 
 {
-
-    [SerializeField] public float speed;
-    [SerializeField] public float runSpeed; 
-    [SerializeField] public float rollSpeed;
-    [SerializeField] public float initialSpeed;
-    [SerializeField] public bool canRoll = true;
+    [Space(10)]
+    [Header("-------------Configs---------")]
     [SerializeField] private PlayerAnim playerAnim;
     [SerializeField] private Gun gun;
     [SerializeField] private Controle controle;
     [SerializeField] private Menu menu;
 
-    private bool canMove = true;
-    
+    [Space(10)]
+    [Header("-------------Movimentação---------")]
+    [SerializeField] public float speed;
+    [SerializeField] public float runSpeed; 
+    [SerializeField] public float rollSpeed;
+    [SerializeField] public float initialSpeed;
+    [SerializeField] public bool canRoll = true;
 
+
+
+
+    public bool canMove = true;
     [Range(1, 5)]public int energiaGasta;
-
     private Rigidbody2D rig;  
     private bool _isRunning;
     private bool _isRolling;
@@ -53,7 +57,6 @@ public class Player : MonoBehaviour
     {
         GameSaveManager.instance.LoadGame();
 
-
         Time.timeScale = 1f;
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
@@ -63,6 +66,7 @@ public class Player : MonoBehaviour
     {
         if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
         {
+           
             OnInput();
             OnRun();
 
@@ -70,6 +74,8 @@ public class Player : MonoBehaviour
             {
                 OnRoll();
             }
+
+
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -92,7 +98,6 @@ public class Player : MonoBehaviour
             OnMove();
         }
     }
-
 
     #region Movement
 
@@ -168,15 +173,19 @@ public class Player : MonoBehaviour
         }
         // para o movimento do player por 0.5f e dps ele pode voltar a se mover 
         canMove = false;
-        Invoke("PermitirMovimento", 0.5f);
+        Invoke("PermitirMovimento", 0.4f);
         playerAnim.TomandoDano();
     }
 
     private void PermitirMovimento()
     {
         canMove = true;
+        canRoll = true;
+        playerAnim.atacando = false;
     }
 
     #endregion
+
+  
 
 }

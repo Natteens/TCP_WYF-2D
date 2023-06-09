@@ -12,6 +12,22 @@ public class Pegouitem : MonoBehaviour
 
     [SerializeField] float distanciaMaxima;
 
+    private void Start()
+    {
+        if (gun.pistolaDesbloqueado)
+        {
+            Destroy(gameObject);
+        }
+        if (gun.rifleDesbloqueado)
+        {
+            Destroy(gameObject);
+        }
+        if (gun.shotgunDesbloqueado)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Update()
     {
         PegarArma();

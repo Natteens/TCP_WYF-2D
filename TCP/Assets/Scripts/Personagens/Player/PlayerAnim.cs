@@ -28,7 +28,6 @@ public class PlayerAnim : MonoBehaviour
        
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Player>();
@@ -37,13 +36,14 @@ public class PlayerAnim : MonoBehaviour
         equipado = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         OnMove();
         OnRun();
-        OnRoll();
+        OnRolling();
         Atk();
+
+        
     }
 
     private void FixedUpdate()
@@ -121,43 +121,44 @@ public class PlayerAnim : MonoBehaviour
 
     #region Rolling
 
+    void OnRolling()
+    {
+        StartCoroutine(OnRoll());
+    }
 
-    void OnRoll()
+    IEnumerator OnRoll()
     {
         if (player.isRolling && !anim.GetCurrentAnimatorStateInfo(0).IsName("Roll"))
         {
-           anim.SetTrigger("isRoll");
-           player.isRolling = false;
-           player.canRoll = false;
-           gun.srGun.color = new Color(gun.srGun.color.r, gun.srGun.color.g, gun.srGun.color.b, 0f);
-           gun.podeAtirar = false;
+            anim.SetTrigger("isRoll");         
+            gun.srGun.color = new Color(gun.srGun.color.r, gun.srGun.color.g, gun.srGun.color.b, 0f);
+            gun.podeAtirar = false;
+            // equipado = false;
+
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+
+            player.canRoll = true;
+            gun.srGun.color = new Color(gun.srGun.color.r, gun.srGun.color.g, gun.srGun.color.b, 1f);
+            gun.podeAtirar = true;
+            // equipado = true;
         }
-        
     }
 
-    void OnRollComplete()
+    IEnumerator OnRollComplete()
     {
-        player.canRoll = true;      
+        player.canRoll = true;
+        player.isRolling = false;
+        player.canRoll = false;
         gun.srGun.color = new Color(gun.srGun.color.r, gun.srGun.color.g, gun.srGun.color.b, 1f);
         gun.podeAtirar = true;
+        // equipado = true;
 
+        yield return null;
     }
 
     #endregion
 
-    public void TomandoDano()
-    {
-        if(!equipado)
-        {
-            anim.SetTrigger("TomoDano");
-        }
-        else
-        {
-            anim.SetTrigger("TomoDanoGun");
-        }
-        
-    }
-    
+    #region ataque
     public void Atk()
     {
         if (Input.GetMouseButtonUp(0) && !equipado && !atacando && controle.EstaminaAtual >= 20)
@@ -178,4 +179,19 @@ public class PlayerAnim : MonoBehaviour
         player.canRoll = true;
         anim.ResetTrigger("atk");
     }
+    #endregion
+    public void TomandoDano()
+    {
+        if(!equipado)
+        {
+            anim.SetTrigger("TomoDano");
+        }
+        else
+        {
+            anim.SetTrigger("TomoDanoGun");
+        }
+        
+    }
+
+  
 }

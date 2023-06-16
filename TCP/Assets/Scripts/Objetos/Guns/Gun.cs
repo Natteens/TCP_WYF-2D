@@ -370,7 +370,6 @@ public class Gun : MonoBehaviour
                       podeAtirar = false;
                       anim.SetTrigger("OnReload");
                       NaoTrocarDeArma();
-                      AnimRecarga = true;
                   }
                   break;
 
@@ -378,10 +377,10 @@ public class Gun : MonoBehaviour
                   if (Input.GetKeyDown(KeyCode.R) && !recarregando && rifleBalasGuardadas > 0 && rifleBalasNoPente < rifleTamanhoPente || (Input.GetMouseButton(0) && !recarregando && podeAtirar && rifleBalasGuardadas > 0 && rifleBalasNoPente <= 0))
                   {
                       recarregando = true;
-                       AnimRecarga = true;
+                      AnimRecarga = true;
                       podeAtirar = false;
                       anim.SetTrigger("OnReload");
-                       NaoTrocarDeArma();
+                      NaoTrocarDeArma();
 
                   }
                   break;
@@ -456,6 +455,7 @@ public class Gun : MonoBehaviour
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
+        // Verificar o scroll do mouse
         if (scroll > 0f && podeTrocarArma && tempoDecorrido > tempoDeTroca)
         {
             armaAtual++;
@@ -491,9 +491,49 @@ public class Gun : MonoBehaviour
             PermitirTrocaDeArma();
         }
 
+        // Verificar os números pressionados
+        if (Input.GetKeyDown(KeyCode.Alpha1) && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        {
+            armaAtual = 1;
+            if (!ArmaDesbloqueada(armaAtual))
+                armaAtual = 0;
+
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+            PermitirTrocaDeArma();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        {
+            armaAtual = 2;
+            if (!ArmaDesbloqueada(armaAtual))
+                armaAtual = 0;
+
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+            PermitirTrocaDeArma();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        {
+            armaAtual = 3;
+            if (!ArmaDesbloqueada(armaAtual))
+                armaAtual = 0;
+
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+            PermitirTrocaDeArma();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && podeTrocarArma && tempoDecorrido > tempoDeTroca)
+        {
+            armaAtual = 4;
+            if (!ArmaDesbloqueada(armaAtual))
+                armaAtual = 0;
+
+            tempoDecorrido = 0f;
+            podeAtirar = true;
+            PermitirTrocaDeArma();
+        }
 
         TipoArma armaSelecionada = ArmaAtualDesbloqueada();
-
 
         switch (armaSelecionada)
         {
@@ -537,6 +577,7 @@ public class Gun : MonoBehaviour
                 break;
         }
     }
+
 
     bool ArmaDesbloqueada(int indice)
     {

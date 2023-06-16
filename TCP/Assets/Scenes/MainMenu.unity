@@ -1210,7 +1210,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1838161753}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: SetMusicVolume
+        m_MethodName: SetMusicVolumeM
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2374,7 +2374,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1838161753}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: SetSFXVolume
+        m_MethodName: SetSFXVolumeM
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2994,7 +2994,7 @@ AudioSource:
   m_GameObject: {fileID: 1273009434}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 5672676586014280199, guid: 0952ee5dda95b68419e56a0c47d89ba6, type: 2}
+  OutputAudioMixerGroup: {fileID: 5672676586014280199, guid: 5163824172532e44386918878f328a8b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -4382,9 +4382,12 @@ MonoBehaviour:
   continueGame: {fileID: 1647052407}
   LoadProgress: {fileID: 289408450}
   BarraLoading: {fileID: 243446324}
-  mix: {fileID: 24100000, guid: 0952ee5dda95b68419e56a0c47d89ba6, type: 2}
-  musicSlider: {fileID: 308368561}
-  SFXslider: {fileID: 949527469}
+  mix: {fileID: 0}
+  musicSlider: {fileID: 0}
+  SFXslider: {fileID: 0}
+  mixM: {fileID: 24100000, guid: 5163824172532e44386918878f328a8b, type: 2}
+  musicSliderM: {fileID: 308368561}
+  SFXsliderM: {fileID: 949527469}
   dificuldade: 0
   legenda: {fileID: 1922237991}
   facil: "F\xE1cil"
@@ -5286,7 +5289,7 @@ AudioSource:
   m_GameObject: {fileID: 2060117954}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 2374745082055110891, guid: 0952ee5dda95b68419e56a0c47d89ba6, type: 2}
+  OutputAudioMixerGroup: {fileID: 2374745082055110891, guid: 5163824172532e44386918878f328a8b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

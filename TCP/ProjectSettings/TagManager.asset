@@ -19,7 +19,7 @@ TagManager:
   - DevConsole
   - ChaoBlood
   - ChaoPadrao
-  - SalaSegura
+  - SafeRoom
   layers:
   - Default
   - TransparentFX

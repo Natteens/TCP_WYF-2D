@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using Pathfinding;
+using System.Linq;
+
 
 public class Inimigo : MonoBehaviour
 {
@@ -127,14 +129,17 @@ public class Inimigo : MonoBehaviour
     private bool VerificarColisaoParede()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, jogador.position - transform.position, distanciaDeVisao, layerParede);
-        if (hit.collider != null && hit.collider.CompareTag("Wall"))
+        string[] tagsPermitidas = { "Wall", "SafeRoom" }; // Array com as tags permitidas
+
+        if (hit.collider != null && tagsPermitidas.Contains(hit.collider.tag))
         {
             PararMovimento();
-           // Debug.Log("Colisão com parede: " + hit.collider.gameObject.name);
+            // Debug.Log("Colisão com objeto: " + hit.collider.gameObject.name);
             return true;
         }
         return false;
     }
+
 
 
     private void Update()

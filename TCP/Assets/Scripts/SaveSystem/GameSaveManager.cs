@@ -128,12 +128,12 @@ public class GameSaveManager : MonoBehaviour
     public void DeleteSave()
     {
         // Exclua o arquivo de salvamento, se existir
-        if (SaveExists())
-        {
+      //  if (SaveExists())
+      //  {
             string savePath = Application.persistentDataPath + saveFilePath;
             Debug.Log("Excluindo arquivo de salvamento em: " + savePath);
             File.Delete(savePath);
-        }
+       // }
     }
 
     private static byte[] GenerateKey(string password, int keySize)

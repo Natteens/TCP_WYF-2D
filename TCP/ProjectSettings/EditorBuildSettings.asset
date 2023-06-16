@@ -14,4 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Laboratorio.unity
     guid: 8a752eda99cc10b4a968725d2e0b6f90
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 41b2e3562797cc6448bb21fa81e61b1d, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: b28df2aa3907e244c9c9a7329c761868, type: 2}

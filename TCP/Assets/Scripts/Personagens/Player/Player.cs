@@ -14,16 +14,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Menu menu;
 
     [Space(10)]
-    [Header("-------------Movimentação---------")]
+    [Header("-------------MovimentaÃ§Ã£o---------")]
     [SerializeField] public float speed;
     [SerializeField] public float runSpeed; 
     [SerializeField] public float rollSpeed;
     [SerializeField] public float initialSpeed;
     [SerializeField] public bool canRoll = true;
-
-
-
-
     public bool canMove = true;
     [Range(1, 5)]public int energiaGasta;
     private Rigidbody2D rig;  
@@ -61,10 +57,9 @@ public class Player : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
     }
-
     void Update()
     {
-        if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
+        if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo nÃ£o estÃ¡ pausado e o menu de opÃ§Ãµes nÃ£o estÃ¡ ativo
         {
            
             OnInput();
@@ -80,20 +75,19 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!menu.optionsPanel.activeSelf) // Verifica se o menu de opções não está ativo
+            if (!menu.optionsPanel.activeSelf) // Verifica se o menu de opï¿½ï¿½es nï¿½o estï¿½ ativo
             {
                 menu.PauseScreen();
             }
             else
             {
-                menu.BackToMenu(); // Fecha o menu de opções
+                menu.BackToMenu(); // Fecha o menu de opï¿½ï¿½es
             }
         }
     }
-
     void FixedUpdate()
     {
-        if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
+        if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo nÃ£o estÃ¡ pausado e o menu de opÃ§Ãµes nÃ£o estÃ¡ ativo
         {
             OnMove();
         }
@@ -141,6 +135,11 @@ public class Player : MonoBehaviour
 
     void OnRoll()
     {
+        StartCoroutine(OnRollCoroutine());
+    }
+
+    IEnumerator OnRollCoroutine()
+    {
         if (Input.GetKeyDown(KeyCode.Space) && canMove && canRoll && !isRolling && direction.magnitude > 0)
         {
             direction.Normalize();
@@ -148,7 +147,10 @@ public class Player : MonoBehaviour
             canRoll = false;
             speed = rollSpeed;
             controle.EstaminaAtual -= 15;
-      
+
+            yield return new WaitForSeconds(playerAnim.anim.GetCurrentAnimatorStateInfo(0).length);
+
+            EndRoll(); 
         }
     }
 
@@ -157,9 +159,7 @@ public class Player : MonoBehaviour
         isRolling = false;
         canRoll = true;
         speed = initialSpeed;
-       
     }
-
 
     #endregion
 
@@ -168,13 +168,14 @@ public class Player : MonoBehaviour
     {
         if (isRolling)
         {
-            // O jogador está rolando, ignorar a animação de dano
+            // O jogador estï¿½ rolando, ignorar a animaï¿½ï¿½o de dano
             return;
         }
         // para o movimento do player por 0.5f e dps ele pode voltar a se mover 
         canMove = false;
         Invoke("PermitirMovimento", 0.4f);
         playerAnim.TomandoDano();
+        
     }
 
     private void PermitirMovimento()
@@ -182,10 +183,12 @@ public class Player : MonoBehaviour
         canMove = true;
         canRoll = true;
         playerAnim.atacando = false;
+        
     }
 
     #endregion
 
   
+ 
 
 }

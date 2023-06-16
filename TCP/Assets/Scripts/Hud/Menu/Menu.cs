@@ -21,12 +21,17 @@ public class Menu : MonoBehaviour
     [SerializeField] public GameObject LoadProgress;
     [SerializeField] private Slider BarraLoading;
 
-
     [Space(10)]
     [Header("------------Sons------------")]
     [SerializeField] private AudioMixer mix;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider SFXslider;
+
+    [Space(10)]
+    [Header("------------Sons do Menu------------")]
+    [SerializeField] private AudioMixer mixM;
+    [SerializeField] private Slider musicSliderM;
+    [SerializeField] private Slider SFXsliderM;
 
     [Space(10)]
     [Header("------------Dificuldade------------")]
@@ -36,8 +41,6 @@ public class Menu : MonoBehaviour
     [SerializeField] private string normal;
     [SerializeField] private string dificil;
 
-
-
     [Space(10)]
     [Header("------------Save------------")]
     public GameObject confirmPanel;
@@ -45,15 +48,11 @@ public class Menu : MonoBehaviour
 
     public bool isPaused = false;
 
-
-
-    // Outras variáveis que você pode precisar para controlar o estado do jogo
-    private bool isNewGame = false;
+   // private bool isNewGame = false;
     private bool isSaveExists = false;
 
     private void Start()
     {
-        // Verifique se existe um save
         isSaveExists = saveManager.SaveExists();
 
         if (saveManager.SaveExists())
@@ -65,7 +64,7 @@ public class Menu : MonoBehaviour
             continueGame.SetActive(false);
         }
 
-        if (PlayerPrefs.HasKey("musicVolume") && PlayerPrefs.HasKey("sfxVolume"))
+        if (PlayerPrefs.HasKey("musicVolume") || PlayerPrefs.HasKey("sfxVolume")) // Som Game
         {
             LoadVolume();
         }
@@ -73,6 +72,16 @@ public class Menu : MonoBehaviour
         {
             SetMusicVolume();
             SetSFXVolume();
+        }
+
+        if (PlayerPrefs.HasKey("musicVolumeM") || PlayerPrefs.HasKey("sfxVolumeM")) // Som Menu
+        {
+            MLoadVolume();
+        }
+        else
+        {
+            SetMusicVolumeM();
+            SetSFXVolumeM();
         }
     }
 
@@ -92,59 +101,41 @@ public class Menu : MonoBehaviour
     {
         if (isSaveExists)
         {
-            // Ative o painel de confirmação
             confirmPanel.SetActive(true);
         }
         else
         {
-            // Se não houver um save existente, inicie um novo jogo
             StartNewGame();
         }
     }
 
     public void ConfirmarSim()
     {
-        // Se o jogador confirmou iniciar um novo jogo
         StartNewGame();
-
-        // Desative o painel de confirmação
         confirmPanel.SetActive(false);
     }
 
     public void ConfirmarNao()
     {
-        // Se o jogador optou por não iniciar um novo jogo
-
-        // Desative o painel de confirmação
         confirmPanel.SetActive(false);
     }
 
     public void StartNewGame()
     {
-        // Verifique se há um save existente antes de iniciar um novo jogo
         if (isSaveExists)
         {
-            // Se houver um save existente, exclua-o
             saveManager.DeleteSave();
         }
 
-        // Inicie um novo jogo
-        isNewGame = true;
-       StartCoroutine(CarregarCena());
+      //  isNewGame = true;
+        StartCoroutine(CarregarCena());
     }
 
     public void ContinueGame()
     {
-        // Continue o jogo a partir do save
-        isNewGame = false;
+     //   isNewGame = false;
         StartCoroutine(CarregarCena());
     }
-
- /*   private void StartGame()
-    {
-        SceneManager.LoadScene(cena);
-    }
- */
 
     public void ShowOptions()
     {
@@ -157,6 +148,8 @@ public class Menu : MonoBehaviour
     {
         optionsPanel.SetActive(false);
     }
+
+    #region Sounds Game
 
     public void SetMusicVolume()
     {
@@ -181,6 +174,35 @@ public class Menu : MonoBehaviour
         SetSFXVolume();
     }
 
+    #endregion
+
+    #region Sounds Menu
+
+    public void SetMusicVolumeM()
+    {
+        float volume = musicSliderM.value;
+        mixM.SetFloat("musicm", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("musicVolumeM", volume);
+    }
+
+    public void SetSFXVolumeM()
+    {
+        float volume = SFXsliderM.value;
+        mixM.SetFloat("sfxm", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("sfxVolumeM", volume);
+    }
+
+    private void MLoadVolume()
+    {
+        musicSliderM.value = PlayerPrefs.GetFloat("musicVolumeM");
+        SFXsliderM.value = PlayerPrefs.GetFloat("sfxVolumeM");
+
+        SetMusicVolumeM();
+        SetSFXVolumeM();
+    }
+
+    #endregion
+
     public void MenuPrincipal()
     {
         StartCoroutine(CarregarCena());
@@ -189,10 +211,7 @@ public class Menu : MonoBehaviour
     public void Sair()
     {
         Debug.Log("Saiu");
-        //Sai do jogo no edit mode
-       // UnityEditor.EditorApplication.isPlaying = false;
-        // Fecha o jogo Compilado
-        Application.Quit();  
+        Application.Quit();
     }
 
     public void PauseScreen()
@@ -212,7 +231,6 @@ public class Menu : MonoBehaviour
     }
 
     #region dificuldade
-    // -------------------------------- DIFICULDADE ----------------------------------------\\
 
     void GetDificuldade()
     {
@@ -269,6 +287,5 @@ public class Menu : MonoBehaviour
         SetLegenda();
     }
 
-    // -------------------------------- DIFICULDADE ----------------------------------------\\
     #endregion
 }

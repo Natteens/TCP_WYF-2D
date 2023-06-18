@@ -4392,9 +4392,9 @@ MonoBehaviour:
   SFXsliderM: {fileID: 949527469}
   dificuldade: 0
   legenda: {fileID: 1922237991}
-  facil: 'IZI '
-  normal: "PADR\xC3O GAYMER"
-  dificil: HARDICORE MERMAO
+  facil: "F\xE1cil"
+  normal: Normal
+  dificil: "Dif\xEDcil"
   confirmPanel: {fileID: 1848871916}
   saveManager: {fileID: 1199480390}
   isPaused: 0

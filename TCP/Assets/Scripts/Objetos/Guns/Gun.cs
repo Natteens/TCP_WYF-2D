@@ -241,15 +241,21 @@ public class Gun : MonoBehaviour
     }
 
     void Update()
-    {       
-        inputArma();
-        Atirar();
-        ReloadArma();       
+    {
+        if (!player.estaMorto)
+        {
+            inputArma();
+            Atirar();
+            ReloadArma(); 
+        }       
     }
 
     void FixedUpdate()
     {
-        FollowMouse();     
+        if (!player.estaMorto)
+        {
+            FollowMouse();  
+        }    
     }
 
     void FollowMouse()

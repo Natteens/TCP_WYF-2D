@@ -161,6 +161,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128e975147b4a54c9bf55e359f9c7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configuracoesDificuldade:
+  - nome: Facil
+    dano: 10
+    vidaMaxima: 20
+  - nome: Normal
+    dano: 20
+    vidaMaxima: 50
+  - nome: Dificil
+    dano: 50
+    vidaMaxima: 120
   distanciaDeVisao: 15
   distanciaMaxima: 15
   distanciaDeAtaque: 2
@@ -175,7 +185,7 @@ MonoBehaviour:
   knockbackDistance: 0.2
   layerParede:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 131264
 --- !u!114 &6422869018055624313
 MonoBehaviour:
   m_ObjectHideFlags: 0

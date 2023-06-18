@@ -3,9 +3,19 @@ using UnityEngine;
 using Pathfinding;
 using System.Linq;
 
-
+[System.Serializable]
+public class ConfiguracaoDificuldade
+{
+    public string nome;
+    public int dano;
+    public int vidaMaxima;
+}
 public class Inimigo : MonoBehaviour
 {
+    [SerializeField]
+    private ConfiguracaoDificuldade[] configuracoesDificuldade;
+    private ConfiguracaoDificuldade configuracaoAtual;
+
     [Space(10)]
     [Header("Configurações de Visão")]
     [Range(1, 100)]
@@ -40,6 +50,7 @@ public class Inimigo : MonoBehaviour
     [Header("Configurações de Raycast")]
     public LayerMask layerParede;
 
+
     private Transform jogador;
     private Animator anim;
     private AIPath aiPath;
@@ -53,7 +64,25 @@ public class Inimigo : MonoBehaviour
 
     private void Start()
     {
-      // player = GetComponent<Player>();
+        // player = GetComponent<Player>();
+        // Recuperar a dificuldade salva nas preferências do jogador
+        int dificuldade = PlayerPrefs.GetInt("Dificuldade", 1); // Valor padrão: 1 (fácil)
+
+        // Verificar se a dificuldade selecionada existe no array de configurações
+        if (dificuldade >= 1 && dificuldade <= configuracoesDificuldade.Length)
+        {
+            configuracaoAtual = configuracoesDificuldade[dificuldade - 1];
+        }
+        else
+        {
+            // Dificuldade inválida, usar a primeira configuração como padrão
+            configuracaoAtual = configuracoesDificuldade[0];
+        }
+
+        // Ajustar as variáveis com base na configuração atual
+        dano = configuracaoAtual.dano;
+        vidaMaxima = configuracaoAtual.vidaMaxima;
+
         jogador = GameObject.FindGameObjectWithTag("Player").transform;
         anim = GetComponent<Animator>();
         aiPath = GetComponent<AIPath>();
@@ -139,8 +168,6 @@ public class Inimigo : MonoBehaviour
         }
         return false;
     }
-
-
 
     private void Update()
     {

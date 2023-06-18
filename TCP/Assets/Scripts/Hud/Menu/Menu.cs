@@ -42,6 +42,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private string facil;
     [SerializeField] private string normal;
     [SerializeField] private string dificil;
+    [SerializeField] private Inimigo inimigo;
 
     [Space(10)]
     [Header("------------Save------------")]
@@ -244,6 +245,7 @@ public class Menu : MonoBehaviour
     public void TelaMorte()
     {
         deathScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void RestartGame()
@@ -310,7 +312,7 @@ public class Menu : MonoBehaviour
     {
         PlayerPrefs.SetInt("Dificuldade", dificuldade);
 
-        SetLegenda();
+        SetLegenda();      
     }
 
     #endregion

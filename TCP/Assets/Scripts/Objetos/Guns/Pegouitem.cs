@@ -14,23 +14,26 @@ public class Pegouitem : MonoBehaviour
 
     private void Start()
     {
-        if (gun.pistolaDesbloqueado)
-        {
-            Destroy(gameObject);
-        }
-        if (gun.rifleDesbloqueado)
-        {
-            Destroy(gameObject);
-        }
-        if (gun.shotgunDesbloqueado)
-        {
-            Destroy(gameObject);
-        }
+        gun = FindObjectOfType<Gun>();
+
+       
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         PegarArma();
+        if (gun.pistolaDesbloqueado == true && tipoArma == TipoArma.Pistola)
+        {
+            Destroy(gameObject);
+        }
+        if (gun.rifleDesbloqueado == true && tipoArma == TipoArma.Rifle)
+        {
+            Destroy(gameObject);
+        }
+        if (gun.shotgunDesbloqueado == true && tipoArma == TipoArma.Shotgun)
+        {
+            Destroy(gameObject);
+        }
     }
     void PegarArma()
     {

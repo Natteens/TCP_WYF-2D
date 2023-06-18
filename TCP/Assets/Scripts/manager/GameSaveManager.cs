@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,8 +38,7 @@ public class GameSaveManager : MonoBehaviour
     public static GameSaveManager instance { get; private set; }
 
     private const string saveFilePath = "/savegame.dat";
-    private static readonly byte[] encryptionKey = GenerateKey("OmelhorTcpDoIFRJ", 256);
-    private static readonly byte[] encryptionIV = GenerateKey("OmelhorTcpDoIFRJ", 128);
+    private static readonly string encryptionKey = "OmelhorTcpDoIFRJ";
 
     private void Awake()
     {
@@ -75,11 +75,11 @@ public class GameSaveManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(gameSaveData);
 
         // Criptografe o JSON
-        byte[] encryptedBytes = Encrypt(jsonData);
+        string encryptedData = Encrypt(jsonData);
 
-        // Salve os bytes criptografados em um arquivo
+        // Salve os dados criptografados em um arquivo
         string savePath = Application.persistentDataPath + saveFilePath;
-        File.WriteAllBytes(savePath, encryptedBytes);
+        File.WriteAllText(savePath, encryptedData);
         Debug.Log("Arquivo de salvamento criado em: " + savePath);
     }
 
@@ -89,11 +89,11 @@ public class GameSaveManager : MonoBehaviour
         string savePath = Application.persistentDataPath + saveFilePath;
         if (SaveExists())
         {
-            // Leia os bytes do arquivo
-            byte[] encryptedBytes = File.ReadAllBytes(savePath);
+            // Leia os dados do arquivo
+            string encryptedData = File.ReadAllText(savePath);
 
-            // Descriptografe os bytes
-            string jsonData = Decrypt(encryptedBytes);
+            // Descriptografe os dados
+            string jsonData = Decrypt(encryptedData);
 
             // Converta o JSON de volta para o objeto GameSaveData
             gameSaveData = JsonUtility.FromJson<GameSaveData>(jsonData);
@@ -128,67 +128,45 @@ public class GameSaveManager : MonoBehaviour
     public void DeleteSave()
     {
         // Exclua o arquivo de salvamento, se existir
-      //  if (SaveExists())
-      //  {
+        if (SaveExists())
+        {
             string savePath = Application.persistentDataPath + saveFilePath;
             Debug.Log("Excluindo arquivo de salvamento em: " + savePath);
             File.Delete(savePath);
-       // }
-    }
-
-    private static byte[] GenerateKey(string password, int keySize)
-    {
-        const int SaltSize = 16;
-        const int Iterations = 10000;
-
-        byte[] salt = new byte[SaltSize];
-        new RNGCryptoServiceProvider().GetBytes(salt);
-
-        var derivedBytes = new Rfc2898DeriveBytes(password, salt, Iterations);
-        return derivedBytes.GetBytes(keySize / 8);
-    }
-
-    private byte[] Encrypt(string data)
-    {
-        using (Aes aes = Aes.Create())
-        {
-            aes.Key = encryptionKey;
-            aes.IV = encryptionIV;
-
-            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                {
-                    byte[] dataBytes = Encoding.UTF8.GetBytes(data);
-                    cryptoStream.Write(dataBytes, 0, dataBytes.Length);
-                    cryptoStream.FlushFinalBlock();
-                    return memoryStream.ToArray();
-                }
-            }
         }
     }
 
-    private string Decrypt(byte[] encryptedData)
+    private string Encrypt(string data)
     {
+        byte[] plainBytes = Encoding.UTF8.GetBytes(data);
+
         using (Aes aes = Aes.Create())
         {
-            aes.Key = encryptionKey;
-            aes.IV = encryptionIV;
+            aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.PKCS7;
 
-            ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            ICryptoTransform encryptor = aes.CreateEncryptor();
 
-            using (MemoryStream memoryStream = new MemoryStream(encryptedData))
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
-                {
-                    using (StreamReader streamReader = new StreamReader(cryptoStream))
-                    {
-                        return streamReader.ReadToEnd();
-                    }
-                }
-            }
+            byte[] encryptedBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
+            return Convert.ToBase64String(encryptedBytes);
+        }
+    }
+
+    private string Decrypt(string encryptedData)
+    {
+        byte[] encryptedBytes = Convert.FromBase64String(encryptedData);
+
+        using (Aes aes = Aes.Create())
+        {
+            aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.PKCS7;
+
+            ICryptoTransform decryptor = aes.CreateDecryptor();
+
+            byte[] decryptedBytes = decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
+            return Encoding.UTF8.GetString(decryptedBytes);
         }
     }
 }

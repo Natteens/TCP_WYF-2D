@@ -26,10 +26,11 @@ public class Player : MonoBehaviour
     private bool _isRunning;
     private bool _isRolling;
     private Vector2 _direction;
-    
-    #region get set
+    public bool estaMorto = false; 
 
-    public Vector2 direction
+#region get set
+
+public Vector2 direction
     {
         get { return _direction; }
         set { _direction = value; }
@@ -56,40 +57,48 @@ public class Player : MonoBehaviour
         Time.timeScale = 1f;
         rig = GetComponent<Rigidbody2D>();
         initialSpeed = speed;
+        
     }
     void Update()
     {
-        if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
+        if (!estaMorto)
         {
-           
-            OnInput();
-            OnRun();
 
-            if (controle.EstaminaAtual >= 15)
+            if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
             {
-                OnRoll();
+
+                OnInput();
+                OnRun();
+
+                if (controle.EstaminaAtual >= 15)
+                {
+                    OnRoll();
+                }
+
+
             }
 
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (!menu.optionsPanel.activeSelf) // Verifica se o menu de op��es n�o est� ativo
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                menu.PauseScreen();
-            }
-            else
-            {
-                menu.BackToMenu(); // Fecha o menu de op��es
-            }
+                if (!menu.optionsPanel.activeSelf) // Verifica se o menu de op��es n�o est� ativo
+                {
+                    menu.PauseScreen();
+                }
+                else
+                {
+                    menu.BackToMenu(); // Fecha o menu de op��es
+                }
+            } 
         }
     }
     void FixedUpdate()
     {
-        if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
+        if (!estaMorto)
         {
-            OnMove();
+            if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
+            {
+                OnMove();
+            } 
         }
     }
 
@@ -187,8 +196,5 @@ public class Player : MonoBehaviour
     }
 
     #endregion
-
-  
- 
 
 }

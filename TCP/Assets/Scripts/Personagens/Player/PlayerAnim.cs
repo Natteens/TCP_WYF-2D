@@ -38,12 +38,13 @@ public class PlayerAnim : MonoBehaviour
 
     void Update()
     {
-        OnMove();
-        OnRun();
-        OnRolling();
-        Atk();
-
-        
+        if (!player.estaMorto)
+        {
+            OnMove();
+            OnRun();
+            OnRolling();
+            Atk(); 
+        } 
     }
 
     private void FixedUpdate()

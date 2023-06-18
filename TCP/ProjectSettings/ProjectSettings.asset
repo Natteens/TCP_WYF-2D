@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: G4Studios
   productName: Whats Your Fear
-  defaultCursor: {fileID: -8328923581568760697, guid: 19b6ad5333205524f814d161de50ad71, type: 3}
+  defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.003921569, g: 0.003921569, b: 0.003921569, a: 1}
   m_ShowUnitySplashScreen: 1

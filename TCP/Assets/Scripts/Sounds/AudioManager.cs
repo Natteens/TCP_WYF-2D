@@ -5,8 +5,6 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-   
-
     [Header("-------Audio Source-------")]
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource SFXSource;
@@ -22,5 +20,7 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = background;
         musicSource.Play();
     }
+    // caso esteja em combate, toque musica de combate
+    // caso esteja morto toque musica de morte
 
 }

@@ -12,6 +12,7 @@ public class Menu : MonoBehaviour
     [Space(10)]
     [Header("------------Cenas------------")]
     [SerializeField] private string cena;
+    [SerializeField] private string cenaMenu;
 
     [Space(10)]
     [Header("------------Settings------------")]
@@ -20,6 +21,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject continueGame;
     [SerializeField] public GameObject LoadProgress;
     [SerializeField] private Slider BarraLoading;
+    [SerializeField] private GameObject deathScreen;
 
     [Space(10)]
     [Header("------------Sons------------")]
@@ -83,12 +85,27 @@ public class Menu : MonoBehaviour
             SetMusicVolumeM();
             SetSFXVolumeM();
         }
+
+        deathScreen.SetActive(false);
     }
+
 
     public IEnumerator CarregarCena()
     {
         LoadProgress.SetActive(true);
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(cena);
+        while (!asyncOperation.isDone)
+        {
+            this.BarraLoading.value = asyncOperation.progress;
+            Debug.Log("Carregando" + (asyncOperation.progress * 100f) + "%");
+            yield return null;
+        }
+    }
+
+    public IEnumerator CarregarCenaMenu()
+    {
+        LoadProgress.SetActive(true);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(cenaMenu);
         while (!asyncOperation.isDone)
         {
             this.BarraLoading.value = asyncOperation.progress;
@@ -122,18 +139,12 @@ public class Menu : MonoBehaviour
 
     public void StartNewGame()
     {
-        if (isSaveExists)
-        {
-            saveManager.DeleteSave();
-        }
-
-      //  isNewGame = true;
+        saveManager.DeleteSave();
         StartCoroutine(CarregarCena());
     }
 
     public void ContinueGame()
-    {
-     //   isNewGame = false;
+    {   
         StartCoroutine(CarregarCena());
     }
 
@@ -205,7 +216,7 @@ public class Menu : MonoBehaviour
 
     public void MenuPrincipal()
     {
-        StartCoroutine(CarregarCena());
+        StartCoroutine(CarregarCenaMenu());
     }
 
     public void Sair()
@@ -228,6 +239,21 @@ public class Menu : MonoBehaviour
             Time.timeScale = 0f;
             PausePanel.SetActive(true);
         }
+    }
+
+    public void TelaMorte()
+    {
+        deathScreen.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+      //  if (isSaveExists)
+      //  {
+           saveManager.LoadGame(); 
+     //   }
+        StartCoroutine(CarregarCena());         
+        deathScreen.SetActive(false);
     }
 
     #region dificuldade

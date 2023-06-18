@@ -4377,11 +4377,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cena: Laboratorio
+  cenaMenu: MainMenu
   optionsPanel: {fileID: 5233151}
   PausePanel: {fileID: 0}
   continueGame: {fileID: 1647052407}
   LoadProgress: {fileID: 289408450}
   BarraLoading: {fileID: 243446324}
+  deathScreen: {fileID: 0}
   mix: {fileID: 0}
   musicSlider: {fileID: 0}
   SFXslider: {fileID: 0}
@@ -4390,9 +4392,9 @@ MonoBehaviour:
   SFXsliderM: {fileID: 949527469}
   dificuldade: 0
   legenda: {fileID: 1922237991}
-  facil: "F\xE1cil"
-  normal: Normal
-  dificil: "Dif\xEDcil"
+  facil: 'IZI '
+  normal: "PADR\xC3O GAYMER"
+  dificil: HARDICORE MERMAO
   confirmPanel: {fileID: 1848871916}
   saveManager: {fileID: 1199480390}
   isPaused: 0

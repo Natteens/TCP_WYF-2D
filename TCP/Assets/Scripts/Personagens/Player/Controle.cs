@@ -6,6 +6,7 @@ public class Controle : MonoBehaviour
 {
     
     private Player player;
+    public Menu menu;
     public Image BarraVida, BarraEstamina, BarraFome, BarraSede;
     [Range(20, 500)]
     public float VidaCheia = 100, EstaminaCheia = 100, FomeCheia = 100, SedeCheia = 100, velocidadeEstamina = 250;
@@ -29,8 +30,6 @@ public class Controle : MonoBehaviour
     }
     void Start()
     {
-       
-
         player = GetComponent<Player>();
         if (GameSaveManager.instance.SaveExists() == false)
         {
@@ -154,8 +153,14 @@ public class Controle : MonoBehaviour
     }
     void Morreu()
     {
-        Debug.Log("Morreu por falta de comida");
+        if (!player.estaMorto && VidaAtual <= 0)
+        {
+            player.estaMorto = true;
+            Debug.Log("Morreu");
+            menu.TelaMorte();
+        }
     }
+
 
 
     #region DANO DA SMOKE 

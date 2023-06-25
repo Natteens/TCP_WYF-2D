@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:TCP/Assets/GunPrefabs/Municoes/Pacote de munição (5).prefab.meta
+guid: e8e4628055f54804c8ad03728a6ea181
+========
 guid: d0472f453922f4c47bd3bbf4231d0633
+>>>>>>>> parent of fa84a49 (fix):TCP/Assets/Prefabs/HUD/CM vcam1.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

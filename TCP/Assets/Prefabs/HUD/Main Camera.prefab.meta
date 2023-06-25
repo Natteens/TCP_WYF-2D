@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:TCP/Assets/Prefabs/Coletaveis/Comida.prefab.meta
+guid: 99038575013630543a7b1e21d8b74946
+========
 guid: b7c7466e2b535dc4a8860b2e08c509e2
+>>>>>>>> parent of fa84a49 (fix):TCP/Assets/Prefabs/HUD/Main Camera.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

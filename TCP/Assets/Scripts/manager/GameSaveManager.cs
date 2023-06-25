@@ -37,7 +37,7 @@ public class GameSaveManager : MonoBehaviour
     public Gun gun;
     public static GameSaveManager instance { get; private set; }
 
-    private const string saveFilePath = "/savegame.dat";
+    private const string saveFilePath = "/savegame.json";
     private static readonly string encryptionKey = "OmelhorTcpDoIFRJ";
 
     private void Awake()

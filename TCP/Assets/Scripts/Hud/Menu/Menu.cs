@@ -42,7 +42,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private string facil;
     [SerializeField] private string normal;
     [SerializeField] private string dificil;
-    [SerializeField] private Inimigo inimigo;
+   // [SerializeField] private Inimigo inimigo;
 
     [Space(10)]
     [Header("------------Save------------")]

@@ -9,6 +9,8 @@ public class PlayerAnim : MonoBehaviour
     private Gun gun;
     public bool equipado;
     public Controle controle;
+    [SerializeField] private Bilhetes bilhetes;
+    [SerializeField] private Menu menu;
 
     [Space(10)]
     [Header("-------------Atacando---------")]
@@ -38,7 +40,7 @@ public class PlayerAnim : MonoBehaviour
 
     void Update()
     {
-        if (!player.estaMorto)
+        if (!player.estaMorto || !bilhetes.LendoBilhete)
         {
             OnMove();
             OnRun();

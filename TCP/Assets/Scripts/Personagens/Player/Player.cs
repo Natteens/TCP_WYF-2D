@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Gun gun;
     [SerializeField] private Controle controle;
     [SerializeField] private Menu menu;
+    [SerializeField] private Bilhetes bilhetes;
+
 
     [Space(10)]
     [Header("-------------Movimentação---------")]
@@ -61,7 +63,7 @@ public Vector2 direction
     }
     void Update()
     {
-        if (!estaMorto)
+        if (!estaMorto || !bilhetes.LendoBilhete)
         {
 
             if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
@@ -93,7 +95,7 @@ public Vector2 direction
     }
     void FixedUpdate()
     {
-        if (!estaMorto)
+        if (!estaMorto  || !bilhetes.LendoBilhete)
         {
             if (!menu.isPaused && !menu.optionsPanel.activeSelf) // Verifica se o jogo não está pausado e o menu de opções não está ativo
             {

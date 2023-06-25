@@ -20,6 +20,7 @@ TagManager:
   - ChaoBlood
   - ChaoPadrao
   - SafeRoom
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -39,6 +40,7 @@ TagManager:
   - PlayerHit
   - PostProcess
   - SafeRoom
+  - Ground
   - 
   - 
   - 
@@ -51,8 +53,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Minimapa
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -107,4 +108,7 @@ TagManager:
     locked: 0
   - name: 'MOUSE AIM '
     uniqueID: 3511895867
+    locked: 0
+  - name: Minimapa
+    uniqueID: 2093273095
     locked: 0

@@ -6,11 +6,16 @@ public class MousePointer : MonoBehaviour
 {
     public Transform pointer;
 
-    private void Awake()
+    void Awake()
     {
         Cursor.visible = false;
     }
-    private void Update()
+    void Update()
+    {
+        InGameMouse();
+    }
+
+    void InGameMouse()
     {
         Vector3 mouse = Input.mousePosition;
         mouse.z = 0.5f;

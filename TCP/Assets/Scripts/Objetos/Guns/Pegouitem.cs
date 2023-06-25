@@ -16,12 +16,6 @@ public class Pegouitem : MonoBehaviour
     {
         gun = FindObjectOfType<Gun>();
 
-       
-    }
-
-    private void FixedUpdate()
-    {
-        PegarArma();
         if (gun.pistolaDesbloqueado == true && tipoArma == TipoArma.Pistola)
         {
             Destroy(gameObject);
@@ -34,11 +28,15 @@ public class Pegouitem : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+    }
+
+    private void Update()
+    {
+        PegarArma();       
     }
     void PegarArma()
-    {
-       
-        
+    {   
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, distanciaMaxima, layerJogador);
 
             for (int i = 0; i < colliders.Length; i++)

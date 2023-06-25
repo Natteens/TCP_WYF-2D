@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:TCP/Assets/Prefabs/Coletaveis/Bebida.prefab.meta
+guid: a3ee96017d1647440a806ab5a71b3bdc
+========
 guid: 60c9d9ac0caa84745a4f273de5dd3fb5
+>>>>>>>> parent of fa84a49 (fix):TCP/Assets/Prefabs/HUD/Canvas - HUD CONTROLE.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

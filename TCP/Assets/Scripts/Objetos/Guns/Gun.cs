@@ -18,6 +18,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private TipoArma _tipoArma;
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer _srGun;
+    [SerializeField] private Bilhetes bilhetes;
 
     [Space(20)]
     [Header("Bullets")]
@@ -242,7 +243,7 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (!player.estaMorto)
+        if (!player.estaMorto || !bilhetes.LendoBilhete)
         {
             inputArma();
             Atirar();
@@ -252,7 +253,7 @@ public class Gun : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!player.estaMorto)
+        if (!player.estaMorto || !bilhetes.LendoBilhete)
         {
             FollowMouse();  
         }    
@@ -583,7 +584,6 @@ public class Gun : MonoBehaviour
                 break;
         }
     }
-
 
     bool ArmaDesbloqueada(int indice)
     {

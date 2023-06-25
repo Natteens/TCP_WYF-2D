@@ -125,13 +125,13 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 15
+  m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 332eae3692520eb4bb6a1a5d0f11e633, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!70 &6422869018055624292
 CapsuleCollider2D:
@@ -146,8 +146,13 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
+<<<<<<< HEAD
+  m_Offset: {x: 0.30576086, y: -0.39803246}
+  m_Size: {x: 2.1870785, y: 1.984384}
+=======
   m_Offset: {x: 0.08478711, y: -0.2560516}
   m_Size: {x: 1.3986195, y: 0.9379279}
+>>>>>>> parent of fa84a49 (fix)
   m_Direction: 1
 --- !u!114 &6422869018055624293
 MonoBehaviour:
@@ -171,9 +176,9 @@ MonoBehaviour:
   - nome: Dificil
     dano: 50
     vidaMaxima: 120
-  distanciaDeVisao: 15
-  distanciaMaxima: 15
-  distanciaDeAtaque: 2
+  distanciaDeVisao: 30
+  distanciaMaxima: 30
+  distanciaDeAtaque: 3
   dano: 25
   layersDano:
     serializedVersion: 2

@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+TCP/Assets/Scenes/Laboratorio.unity filter=lfs diff=lfs merge=lfs -text
+D:UnityProjectsTCPTCP_WYF-2DTCPAssetsScenes filter=lfs diff=lfs merge=lfs -text
+TCP/Assets/Prefabs/Geral/------Mapa---------------------------------------.prefab filter=lfs diff=lfs merge=lfs -text
+TCP filter=lfs diff=lfs merge=lfs -text
+TCP/.gitignore filter=lfs diff=lfs merge=lfs -text
+Assets/Scenes/Laboratorio.unity filter=lfs diff=lfs merge=lfs -text
